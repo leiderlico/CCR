@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+  <meta name="theme-color" content="#1a1a2e"/>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+  <title>CCR</title>
+  <link rel="stylesheet" href="css/app.css"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400&family=Cinzel:wght@600;700&display=swap" rel="stylesheet"/>
+</head>
+<body class="dark">
+
+<!-- SPLASH -->
+<div id="splash" class="screen active">
+  <div class="splash-inner">
+    <img src="assets/img/logoinicio.png" alt="CCR" class="splash-logo"/>
+    <div class="splash-loader"><div></div></div>
+  </div>
+</div>
+
+<!-- MAIN APP -->
+<div id="app" class="screen hidden">
+
+  <!-- TOOLBAR -->
+  <header id="toolbar">
+    <button id="btnBack" class="toolbar-btn hidden" onclick="goBack()">
+      <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+    </button>
+    <span id="toolbarTitle">CCR</span>
+    <div id="toolbarRight">
+      <button id="btnVersion" class="btn-version hidden" onclick="mostrarSelectorVersion()"></button>
+      <button id="btnDarkMode" class="toolbar-btn" onclick="toggleDarkMode()">
+        <img id="iconDark" src="assets/img/noche.png" style="width:22px;height:22px"/>
+      </button>
+    </div>
+  </header>
+
+  <!-- SCREENS -->
+  <main id="mainContent">
+
+    <!-- BIBLIA: LIBROS -->
+    <div id="screenLibros" class="page active">
+      <div class="tabs-biblia">
+        <button class="tab-btn active" data-tab="antiguo" onclick="switchTab(this,'antiguo')">Antiguo Testamento</button>
+        <button class="tab-btn" data-tab="nuevo" onclick="switchTab(this,'nuevo')">Nuevo Testamento</button>
+      </div>
+      <div id="tabAntiguo" class="tab-content active">
+        <div id="listaAntiguo" class="libros-list"></div>
+      </div>
+      <div id="tabNuevo" class="tab-content">
+        <div id="listaNuevo" class="libros-list"></div>
+      </div>
+      <div id="bibleLoading" class="loading-center">
+        <div class="spinner"></div><p>Cargando Biblia…</p>
+      </div>
+    </div>
+
+    <!-- BIBLIA: CAPITULOS -->
+    <div id="screenCapitulos" class="page hidden">
+      <div id="listaCapitulos" class="capitulos-grid"></div>
+    </div>
+
+    <!-- BIBLIA: VERSICULOS -->
+    <div id="screenVersiculos" class="page hidden">
+      <div id="listaVersiculos" class="versiculos-list"></div>
+    </div>
+
+    <!-- DEVOCIONAL -->
+    <div id="screenDevocional" class="page hidden">
+      <div class="devocional-wrap">
+        <div class="devocional-pergamino-wrap">
+          <img id="imgPergamino" src="assets/img/pergaminodevocionalnight.jpg" class="pergamino-img" alt=""/>
+          <div class="pergamino-texto">
+            <p id="devFecha" class="dev-fecha"></p>
+            <h2 id="devTitulo" class="dev-titulo"></h2>
+            <p id="devVersiculo" class="dev-versiculo-texto"></p>
+            <p id="devRef" class="dev-versiculo-ref"></p>
+            <div id="devCuerpo" class="dev-cuerpo"></div>
+          </div>
+        </div>
+      </div>
+      <div id="devLoading" class="loading-center">
+        <div class="spinner"></div><p>Cargando devocional…</p>
+      </div>
+    </div>
+
+    <!-- GRUPOS / VIDEOS -->
+    <div id="screenGrupos" class="page hidden">
+      <div class="grupos-grid">
+        <div class="grupo-card" onclick="abrirVideos('ESCUELA DOMINICAL')">
+          <img src="assets/img/ic_grupo_escuela_dominical.png" alt=""/>
+          <span>ESCUELA DOMINICAL</span>
+        </div>
+        <div class="grupo-card" onclick="abrirVideos('SERVICIOS DE SANIDAD Y MILAGRO')">
+          <img src="assets/img/ic_grupo_sanidad_milagro.png" alt=""/>
+          <span>SERVICIOS DE SANIDAD Y MILAGRO</span>
+        </div>
+        <div class="grupo-card" onclick="abrirVideos('AYUNO Y ORACIÓN')">
+          <img src="assets/img/ic_grupo_ayuno_oracion.png" alt=""/>
+          <span>AYUNO Y ORACIÓN</span>
+        </div>
+        <div class="grupo-card" onclick="abrirVideos('PREDICAS ESPECIALES')">
+          <img src="assets/img/ic_grupo_predicas_especiales.png" alt=""/>
+          <span>PREDICAS ESPECIALES</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- VIDEOS LIST -->
+    <div id="screenVideos" class="page hidden">
+      <div id="videosLoading" class="loading-center"><div class="spinner"></div><p>Cargando videos…</p></div>
+      <div id="listaVideos" class="videos-list"></div>
+    </div>
+
+    <!-- VIDEO PLAYER -->
+    <div id="screenPlayer" class="page hidden">
+      <div class="player-wrap">
+        <div id="ytPlayer"></div>
+        <div id="playerInfo" class="player-info">
+          <h3 id="playerTitulo"></h3>
+          <p id="playerDesc"></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- JUEGO -->
+    <div id="screenJuego" class="page hidden">
+      <!-- Panel: Verificando -->
+      <div id="panelVerificando" class="juego-panel">
+        <img src="assets/img/fondojuegos.png" class="fondo-juegos" alt=""/>
+        <div class="spinner"></div>
+      </div>
+      <!-- Panel: Registro -->
+      <div id="panelRegistro" class="juego-panel hidden">
+        <img src="assets/img/fondojuegos.png" class="fondo-juegos" alt=""/>
+        <div class="juego-card">
+          <h2>¡Únete al juego!</h2>
+          <p>Ingresa tu nombre para competir</p>
+          <input id="regNombre" type="text" placeholder="Nombre" maxlength="20" class="juego-input"/>
+          <input id="regApellido" type="text" placeholder="Apellido" maxlength="20" class="juego-input"/>
+          <button class="juego-btn" onclick="registrarJugador()">Registrarse</button>
+        </div>
+      </div>
+      <!-- Panel: Dificultad -->
+      <div id="panelDificultad" class="juego-panel hidden">
+        <img src="assets/img/fondojuegos.png" class="fondo-juegos" alt=""/>
+        <div class="juego-card">
+          <h2 id="saludoJuego"></h2>
+          <p>Selecciona la dificultad</p>
+          <div class="dificultad-btns">
+            <img src="assets/img/btnfacil.png" class="btn-dif" onclick="iniciarJuego('facil')" alt="Fácil"/>
+            <img src="assets/img/btnmedio.png" class="btn-dif" onclick="iniciarJuego('medio')" alt="Medio"/>
+            <img src="assets/img/btndificil.png" class="btn-dif" onclick="iniciarJuego('dificil')" alt="Difícil"/>
+          </div>
+          <div id="rankingBox" class="ranking-box hidden"></div>
+        </div>
+      </div>
+      <!-- Panel: Jugando -->
+      <div id="panelJugando" class="juego-panel hidden">
+        <img src="assets/img/fondojuegos.png" class="fondo-juegos" alt=""/>
+        <div class="juego-card juego-card-play">
+          <div class="juego-header-row">
+            <span id="jPregNum" class="preg-num"></span>
+            <div class="timer-wrap"><svg viewBox="0 0 36 36"><circle cx="18" cy="18" r="16" fill="none" stroke="#333" stroke-width="3"/><circle id="timerCircle" cx="18" cy="18" r="16" fill="none" stroke="#f5c518" stroke-width="3" stroke-dasharray="100.5" stroke-dashoffset="0" stroke-linecap="round" transform="rotate(-90 18 18)"/></svg><span id="timerText">60</span></div>
+          </div>
+          <p id="jPregunta" class="pregunta-texto"></p>
+          <div id="jOpciones" class="opciones-wrap"></div>
+        </div>
+      </div>
+      <!-- Panel: Resultado -->
+      <div id="panelResultado" class="juego-panel hidden">
+        <img src="assets/img/fondojuegos.png" class="fondo-juegos" alt=""/>
+        <div class="juego-card">
+          <h2>¡Resultado!</h2>
+          <p id="resultadoTexto" class="resultado-texto"></p>
+          <button class="juego-btn" onclick="volverDificultad()">Jugar de nuevo</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- RADIO -->
+    <div id="screenRadio" class="page hidden">
+      <div class="radio-wrap">
+        <div id="radioAnuncio" class="radio-anuncio">
+          <img id="radioImg" src="assets/img/ic_radio.png" class="radio-main-img" alt=""/>
+          <div class="radio-info">
+            <h3 id="radioNombre">Selecciona una estación</h3>
+            <p id="radioFrecuencia"></p>
+            <p id="radioEstado" class="radio-estado">Detenido</p>
+          </div>
+          <button id="btnPlayPause" class="btn-play-pause" onclick="toggleRadio()">
+            <svg id="iconPlay" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+            <svg id="iconPause" viewBox="0 0 24 24" class="hidden"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+          </button>
+        </div>
+        <div class="radio-lista" id="radioLista"></div>
+      </div>
+    </div>
+
+    <!-- PETICIONES -->
+    <div id="screenPeticiones" class="page hidden">
+      <div class="peticiones-wrap">
+        <div id="petFormHeader" class="pet-header">
+          <img src="assets/img/emogipeticiones.png" alt="" class="pet-emoji"/>
+          <h2>Peticiones de Oración</h2>
+          <p>Comparte tu petición con la comunidad</p>
+        </div>
+        <div id="petFormulario">
+          <textarea id="etPeticion" class="pet-textarea" placeholder="Escribe tu petición de oración aquí..." rows="5"></textarea>
+          <button class="pet-btn" onclick="enviarPeticion()">Enviar Petición</button>
+        </div>
+        <div id="petConfirmacion" class="pet-confirmacion hidden">
+          <div class="pet-ok-icon">🙏</div>
+          <h3>¡Petición enviada!</h3>
+          <p>Tu petición ha sido recibida. Estamos orando por ti.</p>
+          <button class="pet-btn" onclick="nuevaPeticion()">Nueva Petición</button>
+          <button class="pet-btn pet-btn-outline" onclick="goBack()">Volver</button>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- BOTTOM NAV -->
+  <nav id="bottomNav">
+    <button class="nav-item active" data-tab="biblia" onclick="navTo('biblia',this)">
+      <img src="assets/img/ic_biblia.png" alt=""/>
+      <span>Biblia</span>
+    </button>
+    <button class="nav-item" data-tab="grupos" onclick="navTo('grupos',this)">
+      <img src="assets/img/ic_video.png" alt=""/>
+      <span>Videos</span>
+    </button>
+    <button class="nav-item" data-tab="devocional" onclick="navTo('devocional',this)">
+      <img src="assets/img/ic_devocionales.png" alt=""/>
+      <span>Devocional</span>
+    </button>
+    <button class="nav-item" data-tab="juego" onclick="navTo('juego',this)">
+      <img src="assets/img/ic_juegosx2.png" alt=""/>
+      <span>Juego</span>
+    </button>
+    <button class="nav-item" data-tab="radio" onclick="navTo('radio',this)">
+      <img src="assets/img/ic_radio.png" alt=""/>
+      <span>Radio</span>
+    </button>
+  </nav>
+
+  <!-- FAB Peticiones (solo en biblia) -->
+  <button id="fabPeticiones" class="fab hidden" onclick="abrirPeticiones()" title="Peticiones">
+    <img src="assets/img/emogipeticiones.png" alt="🙏" style="width:28px;height:28px"/>
+  </button>
+
+</div>
+
+<!-- VERSION MODAL -->
+<div id="modalVersion" class="modal-overlay hidden" onclick="cerrarModalVersion(event)">
+  <div class="modal-box">
+    <h3>Versión de la Biblia</h3>
+    <div id="versionList" class="version-list"></div>
+  </div>
+</div>
+
+<!-- SCRIPTS -->
+<script src="https://www.youtube.com/iframe_api"></script>
+<script src="js/data.js"></script>
+<script src="js/biblia.js"></script>
+<script src="js/devocional.js"></script>
+<script src="js/radio.js"></script>
+<script src="js/juego.js"></script>
+<script src="js/peticiones.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
