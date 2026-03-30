@@ -103,7 +103,7 @@ async function iniciarJuego(dificultad) {
 
   // Load questions from GitHub
   try {
-    const url = `https://raw.githubusercontent.com/YOUR_USER/YOUR_REPO/main/data/preguntas_biblicas.json`;
+    const url = `' + (window.location.href.includes('github.io') ? window.location.href.split('/').slice(0,4).join('/') : '.') + '/data/preguntas_biblicas.json'`;
     const cached = sessionStorage.getItem('preguntas');
     let todas;
     if (cached) {
