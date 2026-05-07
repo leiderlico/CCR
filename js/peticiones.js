@@ -35,9 +35,10 @@ window.currentGrupoNombre = '';
 let videosCache = null;
 
 function abrirVideos(grupoNombre) {
-  window.currentGrupoNombre = grupoNombre;
-  pushScreen('screenVideos', grupoNombre);
-  cargarVideos(grupoNombre);
+  const grupo = normalizarGrupo(grupoNombre);
+  window.currentGrupoNombre = grupo;
+  pushScreen('screenVideos', grupo);
+  cargarVideos(grupo);
 }
 
 async function cargarVideos(grupo) {
@@ -212,6 +213,15 @@ function extraerYoutubeId(url) {
 
 function normalizar(texto) {
   return (texto || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toUpperCase().trim();
+}
+
+function normalizarGrupo(grupoNombre) {
+  const grupo = normalizar(grupoNombre);
+  if (grupo.includes('AYUNO')) return 'AYUNO Y ORACION';
+  if (grupo.includes('ESCUELA')) return 'ESCUELA DOMINICAL';
+  if (grupo.includes('SANIDAD')) return 'SERVICIOS DE SANIDAD Y MILAGRO';
+  if (grupo.includes('PREDICAS')) return 'PREDICAS ESPECIALES';
+  return grupoNombre;
 }
 
 function escapeHtml(value) {
