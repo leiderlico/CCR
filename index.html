@@ -34,10 +34,22 @@
       <span id="toolbarTitle">CCR</span>
     </div>
     <div id="toolbarRight">
+      <button id="btnToolbarRadio" class="toolbar-btn" onclick="navTo('radio', null)" title="Radio">
+        <img src="assets/img/ic_radioon.png" alt="Radio" class="toolbar-icon-img"/>
+      </button>
       <button id="btnVersion" class="btn-version hidden" onclick="mostrarSelectorVersion()"></button>
       <button id="btnDarkMode" class="toolbar-btn" onclick="toggleDarkMode()">
         <img id="iconDark" src="assets/img/noche.png" style="width:22px;height:22px"/>
       </button>
+      <button id="btnToolbarMenu" class="toolbar-btn toolbar-menu-btn" onclick="toggleToolbarMenu(event)" title="Menu">
+        <svg viewBox="0 0 24 24"><path d="M12 8a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm0 2a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm0 6a2 2 0 1 0 0 4 2 2 0 0 0 0-4z"/></svg>
+      </button>
+    </div>
+    <div id="toolbarMenu" class="toolbar-menu hidden">
+      <button onclick="abrirPeticionesDesdeMenu()">Peticiones</button>
+      <button onclick="mostrarAcercaCCR()">Acerca de CCR</button>
+      <button onclick="compartirApp()">Compartir app</button>
+      <button onclick="mostrarConfiguracion()">Configuracion</button>
     </div>
   </header>
 
@@ -143,7 +155,7 @@
       <div id="panelRegistro" class="juego-panel hidden">
         <img src="assets/img/fondojuegos.png" class="fondo-juegos" alt=""/>
         <div class="juego-card">
-          <h2>¡Únete al juego!</h2>
+          <h2>Trivia Biblica</h2>
           <p>Ingresa tu nombre para competir</p>
           <input id="regNombre" type="text" placeholder="Nombre" maxlength="20" class="juego-input"/>
           <input id="regApellido" type="text" placeholder="Apellido" maxlength="20" class="juego-input"/>
@@ -155,7 +167,7 @@
         <img src="assets/img/fondojuegos.png" class="fondo-juegos" alt=""/>
         <div class="juego-card">
           <h2 id="saludoJuego"></h2>
-          <p>Selecciona la dificultad</p>
+          <p>Elige la dificultad</p>
           <div class="dificultad-btns">
             <img src="assets/img/btnfacil.png" class="btn-dif" onclick="iniciarJuego('facil')" alt="Fácil"/>
             <img src="assets/img/btnmedio.png" class="btn-dif" onclick="iniciarJuego('medio')" alt="Medio"/>
@@ -246,11 +258,7 @@
     </button>
     <button class="nav-item" data-tab="juego" onclick="navTo('juego',this)">
       <img src="assets/img/ic_juegosx2.png" alt=""/>
-      <span>Juego</span>
-    </button>
-    <button class="nav-item" data-tab="radio" onclick="navTo('radio',this)">
-      <img src="assets/img/ic_radio.png" alt=""/>
-      <span>Radio</span>
+      <span>Trivia</span>
     </button>
   </nav>
 

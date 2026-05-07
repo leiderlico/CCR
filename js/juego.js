@@ -46,7 +46,7 @@ async function registrarJugador() {
 
   try {
     const body = JSON.stringify({ action: 'registrar', id, nombre, apellido });
-    const res = await fetch(SCRIPT_URL, { method: 'POST', body, headers: { 'Content-Type': 'application/json' } });
+    const res = await fetch(SCRIPT_URL, { method: 'POST', body, headers: { 'Content-Type': 'text/plain;charset=utf-8' } });
     const data = await res.json();
     if (data.ok || data.id) {
       const jugador = { id: data.id || id, nombre: `${nombre} ${apellido}` };
@@ -73,7 +73,7 @@ async function registrarJugador() {
 async function cargarRanking() {
   try {
     const body = JSON.stringify({ action: 'obtener_ranking' });
-    const res = await fetch(SCRIPT_URL, { method: 'POST', body, headers: { 'Content-Type': 'application/json' } });
+    const res = await fetch(SCRIPT_URL, { method: 'POST', body, headers: { 'Content-Type': 'text/plain;charset=utf-8' } });
     const data = await res.json();
     mostrarRanking(data);
   } catch(e) { /* silent */ }
@@ -83,15 +83,18 @@ function mostrarRanking(data) {
   const box = document.getElementById('rankingBox');
   if (!data) return;
   const difs = ['facil','medio','dificil'];
-  const labels = {'facil':'Fácil','medio':'Medio','dificil':'Difícil'};
+  const labels = {'facil':'FACIL','medio':'MEDIO','dificil':'DIFICIL'};
   let html = '';
   difs.forEach(dif => {
     const top = data[`top_${dif}`] || [];
-    if (top.length === 0) return;
-    html += `<h4>🏆 ${labels[dif]}</h4>`;
-    top.slice(0,5).forEach((j, i) => {
-      html += `<div class="ranking-row"><span class="ranking-pos">${i+1}.</span><span class="ranking-nombre">${j.nombre}</span><span class="ranking-pts">${j.puntaje}</span></div>`;
+    html += `<h4>${labels[dif]}</h4><div class="ranking-medals">`;
+    top.slice(0,3).forEach((j, i) => {
+      html += `<div class="ranking-medal rank-${i + 1}"><span class="ranking-pos">${i+1}</span><span class="ranking-nombre">${escapeHtml(firstName(j.nombre))}</span><span class="ranking-pts">${Number(j.puntaje) || 0}pts</span></div>`;
     });
+    for (let i = top.length; i < 3; i++) {
+      html += `<div class="ranking-medal rank-${i + 1}"><span class="ranking-pos">${i+1}</span><span class="ranking-nombre">-</span><span class="ranking-pts">0pts</span></div>`;
+    }
+    html += '</div>';
   });
   if (html) { box.innerHTML = html; box.classList.remove('hidden'); }
 }
@@ -193,7 +196,7 @@ function avanzarPregunta() {
 async function terminarJuego() {
   clearInterval(juegoState.timer);
   const puntaje = juegoState.correctas * 100;
-  document.getElementById('resultadoTexto').textContent = `${juegoState.correctas} / ${juegoState.preguntas.length} correctas — ${puntaje} pts`;
+  document.getElementById('resultadoTexto').textContent = `${juegoState.correctas} / ${juegoState.preguntas.length} correctas - ${puntaje} pts`;
   showJuegoPanel('panelResultado');
 
   // Save score
@@ -204,7 +207,7 @@ async function terminarJuego() {
       puntaje,
       dificultad: juegoState.dificultad
     });
-    await fetch(SCRIPT_URL, { method: 'POST', body, headers: { 'Content-Type': 'application/json' } });
+    await fetch(SCRIPT_URL, { method: 'POST', body, headers: { 'Content-Type': 'text/plain;charset=utf-8' } });
   } catch(e) { /* silent */ }
 }
 
@@ -225,4 +228,18 @@ function getAppBaseUrl() {
   const loc = window.location.href;
   if (loc.includes('github.io')) return loc.split('/').slice(0, 4).join('/');
   return '.';
+}
+
+function firstName(nombre) {
+  return String(nombre || '').trim().split(/\s+/)[0] || '-';
+}
+
+function escapeHtml(value) {
+  return String(value || '').replace(/[&<>"']/g, ch => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;'
+  }[ch]));
 }

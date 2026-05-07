@@ -48,48 +48,79 @@ async function cargarVideos(grupo) {
   document.getElementById('listaVideos').innerHTML = '';
 
   try {
-    if (!videosCache) {
-      const res = await fetch(SHEET_CSV);
-      if (!res.ok) throw new Error('HTTP ' + res.status);
-      const csv = await res.text();
-      videosCache = parseCSV(csv);
-    }
+    const videos = await ensureVideosCache();
 
-    const filtrados = videosCache
+    const filtrados = videos
       .filter(v => normalizar(v.grupo) === normalizar(grupo))
       .sort((a, b) => (b.fechaOrden || 0) - (a.fechaOrden || 0));
 
-    document.getElementById('videosLoading').classList.add('hidden');
-    const lista = document.getElementById('listaVideos');
-
-    if (filtrados.length === 0) {
-      lista.innerHTML = '<p style="padding:24px;color:var(--text2);text-align:center">No hay videos disponibles aun.</p>';
-      return;
-    }
-
-    filtrados.forEach(v => {
-      const videoId = v.videoId || extraerYoutubeId(v.urlYoutube);
-      const titulo = v.titulo || 'Sin titulo';
-      const desc = v.predicador || '';
-      const thumb = videoId ? `https://img.youtube.com/vi/${videoId}/mqdefault.jpg` : 'assets/img/ic_video.png';
-
-      const card = document.createElement('div');
-      card.className = 'video-card';
-      card.innerHTML = `
-        <img class="video-thumb" src="${thumb}" alt="${escapeHtml(titulo)}" onerror="this.src='assets/img/ic_video.png'"/>
-        <div class="video-info">
-          <div class="video-title">${escapeHtml(titulo)}</div>
-          <div class="video-desc">${escapeHtml(desc)}</div>
-          ${v.cita ? `<div class="video-chip">${escapeHtml(v.cita)}</div>` : ''}
-        </div>
-      `;
-      card.onclick = () => abrirPlayer(v, titulo);
-      lista.appendChild(card);
-    });
+    renderListaVideos(filtrados, 'No hay videos disponibles aun.');
   } catch(e) {
     document.getElementById('videosLoading').classList.add('hidden');
     document.getElementById('listaVideos').innerHTML = '<p style="padding:24px;color:var(--text2);text-align:center">Error cargando videos.</p>';
   }
+}
+
+async function ensureVideosCache() {
+  if (videosCache) return videosCache;
+  const res = await fetch(SHEET_CSV);
+  if (!res.ok) throw new Error('HTTP ' + res.status);
+  const csv = await res.text();
+  videosCache = parseCSV(csv);
+  return videosCache;
+}
+
+async function getVideosPorCapitulo(libroId, capitulo) {
+  const videos = await ensureVideosCache();
+  return videos
+    .filter(v => Number(v.libroId) === Number(libroId) && Number(v.capitulo) === Number(capitulo))
+    .sort((a, b) => (b.fechaOrden || 0) - (a.fechaOrden || 0));
+}
+
+async function abrirVideosCapitulo(libroId, capitulo, titulo) {
+  const nombre = titulo || `${LIBROS_BIBLIA[Number(libroId)] || 'Capitulo'} ${capitulo}`;
+  window.currentGrupoNombre = nombre;
+  pushScreen('screenVideos', nombre);
+  document.getElementById('videosLoading').classList.remove('hidden');
+  document.getElementById('listaVideos').innerHTML = '';
+  try {
+    const videos = await getVideosPorCapitulo(libroId, capitulo);
+    renderListaVideos(videos, 'No hay predicas registradas para este capitulo.');
+  } catch(e) {
+    document.getElementById('videosLoading').classList.add('hidden');
+    document.getElementById('listaVideos').innerHTML = '<p style="padding:24px;color:var(--text2);text-align:center">Error cargando videos.</p>';
+  }
+}
+
+function renderListaVideos(videos, emptyText) {
+  document.getElementById('videosLoading').classList.add('hidden');
+  const lista = document.getElementById('listaVideos');
+  lista.innerHTML = '';
+
+  if (!videos.length) {
+    lista.innerHTML = `<p style="padding:24px;color:var(--text2);text-align:center">${escapeHtml(emptyText)}</p>`;
+    return;
+  }
+
+  videos.forEach(v => {
+    const videoId = v.videoId || extraerYoutubeId(v.urlYoutube);
+    const titulo = v.titulo || 'Sin titulo';
+    const desc = v.predicador || '';
+    const thumb = videoId ? `https://img.youtube.com/vi/${videoId}/mqdefault.jpg` : 'assets/img/ic_video.png';
+
+    const card = document.createElement('div');
+    card.className = 'video-card';
+    card.innerHTML = `
+      <img class="video-thumb" src="${thumb}" alt="${escapeHtml(titulo)}" onerror="this.src='assets/img/ic_video.png'"/>
+      <div class="video-info">
+        <div class="video-title">${escapeHtml(titulo)}</div>
+        <div class="video-desc">${escapeHtml(desc)}</div>
+        ${v.cita ? `<div class="video-chip">${escapeHtml(v.cita)}</div>` : ''}
+      </div>
+    `;
+    card.onclick = () => abrirPlayer(v, titulo);
+    lista.appendChild(card);
+  });
 }
 
 /* YOUTUBE PLAYER */

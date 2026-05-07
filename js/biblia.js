@@ -4,6 +4,7 @@ let currentVersion = 'RVA1960';
 let currentLibro = null;
 let currentCapitulo = null;
 window.currentLibroNombre = '';
+window.currentCapitulo = null;
 window.bibleData = null;
 
 const VERSIONES = [
@@ -143,6 +144,7 @@ function seleccionarLibro(libro) {
 
 function seleccionarCapitulo(num) {
   currentCapitulo = num;
+  window.currentCapitulo = num;
   renderVersiculos(num);
   pushScreen('screenVersiculos', currentLibro.nombre + ' ' + num, true);
   document.getElementById('btnVersion').classList.remove('hidden');
@@ -156,12 +158,40 @@ function renderVersiculos(num) {
 
   const lista = document.getElementById('listaVersiculos');
   lista.innerHTML = '';
+  const videosSlot = document.createElement('div');
+  videosSlot.id = 'chapterVideosSlot';
+  lista.appendChild(videosSlot);
+
   versiculos.forEach(v => {
     const el = document.createElement('div');
     el.className = 'versiculo-item';
     el.innerHTML = `<span class="ver-num">${v.versiculo}</span><span class="ver-texto">${escapeHtml(v.texto)}</span>`;
     lista.appendChild(el);
   });
+
+  renderChapterVideosHint(videosSlot, currentLibro.id, num, currentLibro.nombre);
+}
+
+async function renderChapterVideosHint(slot, libroId, capitulo, libroNombre) {
+  if (!slot || typeof getVideosPorCapitulo !== 'function') return;
+  slot.innerHTML = '';
+  try {
+    const videos = await getVideosPorCapitulo(libroId, capitulo);
+    if (!videos.length) return;
+    const label = videos.length === 1 ? '1 predica de este capitulo' : `${videos.length} predicas de este capitulo`;
+    const btn = document.createElement('button');
+    btn.className = 'chapter-video-fab extended';
+    btn.innerHTML = `
+      <img src="assets/img/ic_video.png" alt=""/>
+      <span>${escapeHtml(label)}</span>
+      <b>${videos.length > 99 ? '99+' : videos.length}</b>
+    `;
+    btn.onclick = () => abrirVideosCapitulo(libroId, capitulo, `${libroNombre} ${capitulo}`);
+    slot.appendChild(btn);
+    setTimeout(() => btn.classList.remove('extended'), 1600);
+  } catch(e) {
+    // Videos are optional; the Bible chapter should keep working offline.
+  }
 }
 
 function switchTab(btn, tab) {

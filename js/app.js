@@ -16,6 +16,14 @@ const TAB_SCREENS = {
 };
 
 window.addEventListener('DOMContentLoaded', () => {
+  document.addEventListener('click', event => {
+    const menu = document.getElementById('toolbarMenu');
+    const trigger = document.getElementById('btnToolbarMenu');
+    if (!menu || menu.classList.contains('hidden')) return;
+    if (menu.contains(event.target) || trigger?.contains(event.target)) return;
+    closeToolbarMenu();
+  });
+
   const saved = localStorage.getItem('ccr_dark');
   if (saved === 'light') {
     state.darkMode = false;
@@ -64,6 +72,7 @@ function updateDarkIcon() {
 }
 
 function navTo(tab, btn, options = {}) {
+  closeToolbarMenu();
   if (tab === state.currentTab && state.screenStack.length === 0) return;
 
   state.screenStack = [];
@@ -94,7 +103,7 @@ function showTab(tab) {
   }
 
   document.getElementById('bottomNav').style.display = 'flex';
-  document.getElementById('fabPeticiones').classList.toggle('hidden', tab !== 'biblia');
+  document.getElementById('fabPeticiones').classList.add('hidden');
 }
 
 function setToolbarForRoot() {
@@ -105,6 +114,7 @@ function setToolbarForRoot() {
 }
 
 function pushScreen(screenId, title, showVersion = false, options = {}) {
+  closeToolbarMenu();
   const current = document.querySelector('.page.active');
   if (current) state.screenStack.push(current.id);
 
@@ -139,6 +149,7 @@ function goBack(options = {}) {
 }
 
 function goBackInternal() {
+  closeToolbarMenu();
   if (state.screenStack.length === 0) {
     navTo(state.currentTab, null, { skipHistory: true });
     return;
@@ -158,7 +169,7 @@ function goBackInternal() {
   if (state.screenStack.length === 0) {
     setToolbarForRoot(state.currentTab);
     document.getElementById('bottomNav').style.display = 'flex';
-    if (state.currentTab === 'biblia') document.getElementById('fabPeticiones').classList.remove('hidden');
+    document.getElementById('fabPeticiones').classList.add('hidden');
   } else {
     document.getElementById('btnBack').classList.remove('hidden');
     document.body.classList.remove('root-screen');
@@ -169,6 +180,12 @@ function goBackInternal() {
     } else if (prevId === 'screenVideos') {
       document.getElementById('toolbarTitle').textContent = window.currentGrupoNombre || '';
       document.getElementById('bottomNav').style.display = 'flex';
+    } else if (prevId === 'screenVersiculos') {
+      document.getElementById('toolbarTitle').textContent = window.currentLibroNombre && window.currentCapitulo
+        ? `${window.currentLibroNombre} ${window.currentCapitulo}`
+        : (window.currentLibroNombre || '');
+      document.getElementById('btnVersion').classList.remove('hidden');
+      document.getElementById('bottomNav').style.display = 'none';
     }
   }
 
@@ -177,6 +194,43 @@ function goBackInternal() {
 
 function abrirPeticiones() {
   pushScreen('screenPeticiones', 'Peticiones de Oracion');
+}
+
+function toggleToolbarMenu(event) {
+  event?.stopPropagation();
+  document.getElementById('toolbarMenu')?.classList.toggle('hidden');
+}
+
+function closeToolbarMenu() {
+  document.getElementById('toolbarMenu')?.classList.add('hidden');
+}
+
+function abrirPeticionesDesdeMenu() {
+  closeToolbarMenu();
+  abrirPeticiones();
+}
+
+function mostrarAcercaCCR() {
+  closeToolbarMenu();
+  alert('Centro Cristiano de Restauracion CCR');
+}
+
+async function compartirApp() {
+  closeToolbarMenu();
+  const shareData = { title: 'CCR', text: 'CCR', url: window.location.href };
+  try {
+    if (navigator.share) {
+      await navigator.share(shareData);
+    } else if (navigator.clipboard) {
+      await navigator.clipboard.writeText(window.location.href);
+      alert('Enlace copiado');
+    }
+  } catch(e) {}
+}
+
+function mostrarConfiguracion() {
+  closeToolbarMenu();
+  mostrarSelectorVersion();
 }
 
 function initBrowserHistory() {
@@ -235,7 +289,7 @@ function restoreHistorySnapshot(snapshot) {
   document.getElementById('btnBack').classList.toggle('hidden', state.screenStack.length === 0);
   document.getElementById('btnVersion').classList.toggle('hidden', !snapshot.showVersion);
   document.getElementById('bottomNav').style.display = snapshot.bottomHidden ? 'none' : 'flex';
-  document.getElementById('fabPeticiones').classList.toggle('hidden', state.currentTab !== 'biblia' || state.screenStack.length > 0);
+  document.getElementById('fabPeticiones').classList.add('hidden');
   document.body.classList.toggle('root-screen', state.screenStack.length === 0);
 
   if (snapshot.activePage !== 'screenPlayer') stopYTPlayer();
