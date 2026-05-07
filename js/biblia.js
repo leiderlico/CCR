@@ -112,11 +112,7 @@ function renderLibros() {
   libros.forEach(libro => {
     const el = document.createElement('div');
     el.className = 'libro-item';
-    el.innerHTML = `
-      <span>${escapeHtml(libro.nombre)}</span>
-      <span class="libro-capitulos">${libro.capitulos} cap.</span>
-      <svg class="libro-chevron" viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
-    `;
+    el.innerHTML = `<span>${escapeHtml(libro.nombre)}</span>`;
     el.onclick = () => seleccionarLibro(libro);
     (libro.testamento === 'Antiguo' ? antiguoEl : nuevoEl).appendChild(el);
   });

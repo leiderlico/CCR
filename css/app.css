@@ -24,7 +24,7 @@
   --radio-subtitle: #a0a0c0;
 }
 body.light {
-  --bg: #f5fbff;
+  --bg: #ffffff;
   --bg2: #1aaee8;
   --bg3: #ffffff;
   --surface: #ffffff;
@@ -172,43 +172,63 @@ body:not(.root-screen) #toolbarLogo { display: none; }
 ══════════════════════════════════════════════════════ */
 .tabs-biblia {
   display: flex;
-  gap: 16px;
+  gap: 12px;
   background: var(--bg);
   border-bottom: none;
   position: sticky;
   top: 0;
   z-index: 5;
-  padding: 18px 16px 14px;
+  padding: 8px 6px 4px;
 }
 .tab-btn {
   flex: 1;
-  padding: 13px 8px;
+  padding: 8px 6px;
   margin: 0;
   background: var(--bg2);
   border: none;
   border-radius: 8px;
   cursor: pointer;
   color: #fff;
-  font-size: 18px;
+  font-size: 14px;
   font-weight: 800;
   font-family: 'Lora', Georgia, serif;
   transition: all .2s;
   box-shadow: 0 14px 0 -12px rgba(26,174,232,.2);
+  white-space: nowrap;
+  line-height: 1.15;
+  opacity: .48;
 }
-.tab-btn.active { color: #fff; border-bottom-color: transparent; }
+.tab-btn.active { color: #fff; border-bottom-color: transparent; opacity: 1; }
 .tab-content { display: none; }
 .tab-content.active { display: block; }
-.libros-list { padding: 8px 0; }
+.libros-list { padding: 6px 10px 88px; background: var(--bg); }
 
 .libro-item {
   display: flex; align-items: center; justify-content: space-between;
-  padding: 14px 20px; border-bottom: 1px solid var(--border);
-  cursor: pointer; background: var(--bg); transition: background .15s;
-  font-size: 16px; color: var(--text);
+  min-height: 58px;
+  margin: 6px 0;
+  padding: 9px 28px;
+  border: 0;
+  border-radius: 8px;
+  cursor: pointer;
+  background: #001013;
+  transition: background .15s, transform .15s;
+  font-size: 17px;
+  color: #e8f4fc;
+  box-shadow: 0 0 0 1px rgba(26,174,232,.025), 0 2px 8px rgba(0,0,0,.38);
 }
-.libro-item:active { background: var(--surface2); }
+.libro-item:active { background: #051b21; transform: scale(.985); }
 .libro-item .libro-capitulos { font-size: 12px; color: var(--text3); }
 .libro-chevron { width: 16px; height: 16px; fill: var(--text3); flex-shrink: 0; }
+body.light .tabs-biblia { background: #ffffff; }
+body.light .tab-btn { background: #1aaee8; }
+body.light .libros-list { background: #ffffff; }
+body.light .libro-item {
+  background: #e6f7ff;
+  color: #1a1a1a;
+  box-shadow: 0 2px 7px rgba(0,0,0,.18), 0 0 0 1px rgba(26,174,232,.08);
+}
+body.light .libro-item:active { background: #d7f1fb; }
 
 .capitulos-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; padding: 16px; }
 .cap-item {
@@ -523,10 +543,11 @@ body.dark .ranking-full-row { color: var(--text); }
 .hidden { display: none !important; }
 
 @media (max-width: 380px) {
-  .tabs-biblia { gap: 10px; padding: 16px 10px 12px; }
-  .tab-btn { font-size: 15px; }
+  .tabs-biblia { gap: 8px; padding: 8px 6px 4px; }
+  .tab-btn { font-size: 12px; padding-inline: 4px; }
+  .libro-item { padding-inline: 20px; }
 }
 
 @media (min-width: 700px) {
-  .tab-btn { font-size: 24px; }
+  .tab-btn { font-size: 14px; }
 }
