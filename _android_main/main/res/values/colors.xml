@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- ══════════════════════════════════════════════════════════════════════
+         COLORES BASE — Paleta del logo CCR
+         Azul cyan #1AAEE8 | Rojo #C0272D | Amarillo #F5D800
+    ══════════════════════════════════════════════════════════════════════ -->
+    <color name="primary">#1AAEE8</color>           <!-- Azul cyan principal -->
+    <color name="primary_dark">#1288B8</color>      <!-- Azul cyan oscuro para status bar -->
+    <color name="primary_light">#6ACDE8</color>     <!-- Azul cyan claro -->
+    <color name="accent">#F5D800</color>            <!-- Amarillo neón — acento dorado -->
+    <color name="red_logo">#C0272D</color>          <!-- Rojo vivo del logo -->
+    <color name="white">#FFFFFF</color>
+    <color name="black">#FF000000</color>
+    <color name="purple_200">#889455D3</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+
+    <!-- ══════════════════════════════════════════════════════════════════════
+         1. PANTALLA GENERAL (MainActivity / Toolbar / BottomNav)
+    ══════════════════════════════════════════════════════════════════════ -->
+
+    <!-- 1.1 Toolbar -->
+    <color name="toolbar_background">@color/primary</color>
+    <color name="toolbar_title_text">@color/accent</color>         <!-- Amarillo sobre azul -->
+
+    <!-- 1.2 Menú hamburger (toolbar) -->
+    <color name="toolbar_menu_icon">@color/accent</color>          <!-- Ícono 3 rayitas — amarillo igual que el título -->
+    <color name="toolbar_menu_ripple">#33F5D800</color>            <!-- Ripple al tocar — amarillo translúcido -->
+
+    <!-- 1.2b Popup versiones (RV1960) — menú desplegable de la Toolbar
+         INDEPENDIENTE de colorOnPrimary (que usan los chips).
+         Cambiar aquí NO afecta ningun otro elemento de la app. -->
+    <color name="toolbar_popup_background">@color/primary</color>  <!-- Fondo azul cyan — igual que el toolbar -->
+    <color name="toolbar_popup_text">@color/white</color>          <!-- Texto blanco — máximo contraste sobre azul -->
+
+    <!-- 1.3 BottomNavigationView -->
+    <color name="bottom_nav_background">@color/primary</color>
+    <color name="bottom_nav_indicator">@color/accent</color>       <!-- Gota amarilla indicador activo -->
+    <color name="bottom_nav_item_selected">#FFFFFF</color>         <!-- Ítem activo — blanco -->
+    <color name="bottom_nav_item_unselected">#FFFFFF</color>       <!-- Ítem inactivo — blanco -->
+
+    <!-- 1.4 FAB Micrófono -->
+    <color name="mic_active_color">@color/red_logo</color>         <!-- Rojo cuando activo -->
+    <color name="mic_inactive_color">#888888</color>
+    <color name="mic_icon_tint">#FFFFFF</color>
+
+    <!--
+    ══════════════════════════════════════════════════════════════════════
+    AGREGAR ESTOS COLORES al bloque "1.5 Radio" en res/values/colors.xml
+    ══════════════════════════════════════════════════════════════════════
+    El bloque 1.5 Radio ya existe. Reemplázalo completo por esto:
+     -->
+     
+<!-- 1.5 Radio — día -->
+     <color name="radio_background">#F5F5F7</color>             <!-- Fondo claro suave -->
+     <color name="radio_title">#1D1D1F</color>                  <!-- Título oscuro -->
+     <color name="radio_subtitle">#6E6E73</color>               <!-- Subtítulo gris -->
+     <color name="radio_fab_background">@color/primary</color>  <!-- Botón play azul cyan -->
+     <color name="radio_live_text">#FF3B30</color>              <!-- Texto "EN VIVO" rojo -->
+     <color name="radio_card_inactive">#FFFFFF</color> <!-- Tarjeta estación inactiva — blanco -->
+     <color name="radio_anuncio_background">#EAF6FD</color>  <!-- Fondo del anuncio — azul muy claro -->
+
+<!-- 1.6 Panel de sugerencias de voz -->
+    <color name="suggestion_panel_background">#CC000000</color>
+    <color name="suggestion_panel_title_text">@color/accent</color> <!-- Amarillo en panel oscuro -->
+    <color name="suggestion_card_reference_text">@color/red_logo</color>
+    <color name="suggestion_card_verse_text">#555555</color>
+
+    <!-- 1.6 Loading overlay -->
+    <color name="loading_overlay_background">#80000000</color>
+    <color name="loading_text">#FFFFFF</color>
+
+    <!-- 1.7 BottomSheet menú hamburger -->
+    <color name="bottom_sheet_background">@color/surface_color</color>  <!-- Mismo fondo general -->
+    <color name="bottom_sheet_handle">@color/divider_color</color>      <!-- Manija gris sutil -->
+    <color name="bottom_sheet_accent_bar">@color/primary</color>        <!-- Línea azul decorativa -->
+
+    <!-- ══════════════════════════════════════════════════════════════════════
+         2. PANTALLA BIBLIA — Lista de Libros (LibrosFragment)
+    ══════════════════════════════════════════════════════════════════════ -->
+
+    <!-- 2.1 Headers Antiguo/Nuevo Testamento -->
+    <color name="testamento_header_background">#0D7AB0</color>     <!-- Azul más oscuro que toolbar -->
+    <color name="testamento_header_text">#BCFFFFFF</color>
+
+    <!-- 2.2 Item Libro -->
+    <color name="libro_nombre_text">#801A1A1A</color>              <!-- Negro al 50% de opacidad -->
+    <color name="libro_capitulos_text">#888888</color>
+    <color name="libro_abrev_text">@color/primary</color>
+    <color name="lineadivisorachica">#FFFFFF</color>
+
+    <!-- 2.3 Divisor entre columnas AT / NT -->
+    <color name="divider_color">@color/testamento_header_background</color>
+
+    <!-- ══════════════════════════════════════════════════════════════════════
+         3. PANTALLA BIBLIA — Capítulos (CapitulosFragment)
+    ══════════════════════════════════════════════════════════════════════ -->
+    <color name="capitulo_numero_text">@color/primary</color>
+
+    <!-- ══════════════════════════════════════════════════════════════════════
+         4. PANTALLA BIBLIA — Versículos (VersiculosFragment)
+    ══════════════════════════════════════════════════════════════════════ -->
+
+    <!-- 4.1 Número de versículo -->
+    <color name="versiculo_numero_text">@color/red_logo</color>
+    <!-- 4.2 Texto del versículo -->
+    <color name="versiculo_texto">@color/black</color>
+    <!-- 4.3 Versículo resaltado -->
+    <color name="highlight_color">#301AAEE8</color>                <!-- Azul muy transparente -->
+
+    <!-- 4.4 Modo oscuro de lectura -->
+    <color name="lectura_dark_fondo">#000000</color>
+    <color name="lectura_dark_texto">#FEF9F0</color>
+    <color name="lectura_dark_numero">#F5D800</color>              <!-- Amarillo sobre negro -->
+    <color name="lectura_dark_highlight">#201AAEE8</color>
+
+    <!-- ══════════════════════════════════════════════════════════════════════
+         5. PANTALLA VIDEOS — Lista (VideosFragment)
+    ══════════════════════════════════════════════════════════════════════ -->
+
+    <!-- 5.1 Fondo general de la app -->
+    <color name="surface_color">#F5FBFF</color>                    <!-- Blanco con toque azul -->
+
+    <!-- 5.2 Barra de búsqueda -->
+    <color name="search_hint_text">#262626</color>
+    <color name="search_status_text">@color/red_logo</color>
+    <color name="search_box_stroke">@color/red_logo</color>
+    <color name="search_box_background">#FFFFFF</color>
+    <color name="search_icon_tint">@color/red_logo</color>
+    <color name="search_hint_floating">@color/red_logo</color>
+    <color name="search_cursor">@color/primary</color>
+    <color name="search_input_text">@color/black</color>
+
+    <!-- 5.3 Chips de filtros -->
+    <color name="chip_text">@color/primary</color>
+    <color name="chip_stroke">@color/primary</color>
+    <color name="chip_background">@color/surface_color</color>
+    <color name="chip_background_selected">@color/surface_color</color>
+    <color name="chip_text_selected">#7C0202</color>
+    <color name="chip_check_icon">@color/chip_text_selected</color>
+
+    <!-- 5.4 Header de grupo en lista de videos -->
+    <color name="grupo_nombre_text">@color/primary</color>
+    <color name="grupo_conteo_text">#888888</color>
+
+    <!-- 5.5 Card de video -->
+    <color name="video_thumbnail_background">#1A1AAEE8</color>     <!-- Azul muy transparente -->
+    <color name="video_card_background">#FFFFFF</color>
+    <color name="video_card_stroke">#D0E8F5</color>                <!-- Borde sutil azul claro -->
+    <color name="video_card_accent_bar">@color/red_logo</color>
+    <color name="video_titulo_text">#1A1A1A</color>
+    <color name="video_predicador_text">@color/primary</color>
+    <color name="video_fecha_text">#888888</color>
+    <color name="video_chip_libro_background">#1AC0272D</color>    <!-- Rojo transparente -->
+    <color name="video_chip_libro_text">@color/red_logo</color>
+    <color name="video_play_icon_tint">@color/primary</color>
+
+    <!-- 5.6 Estado vacío -->
+    <color name="empty_state_title">@color/primary</color>
+    <color name="empty_state_subtitle">#888888</color>
+
+    <!-- ══════════════════════════════════════════════════════════════════════
+         5b. SELECTOR DE GRUPOS (GruposSelectorFragment)
+    ══════════════════════════════════════════════════════════════════════ -->
+    <color name="grupo_card_background">@color/primary</color>     <!-- Fondo de las cards -->
+    <color name="grupo_card_texto">@color/white</color>
+    <color name="grupo_card_icono_circulo">#25FFFFFF</color>       <!-- Círculo ícono — blanco 15% -->
+    <color name="grupo_card_flecha_circulo">#20FFFFFF</color>      <!-- Círculo flecha — blanco 12% -->
+
+    <!-- ══════════════════════════════════════════════════════════════════════
+         6. PANTALLA REPRODUCTOR DE VIDEO (VideoPlayerFragment)
+    ══════════════════════════════════════════════════════════════════════ -->
+    <color name="player_background">#000000</color>
+    <color name="player_titulo_background">@color/primary</color>
+    <color name="player_titulo_text">@color/accent</color>
+
+    <!-- 6b. Panel de información del video -->
+    <color name="player_info_background">@color/surface_color</color>
+    <color name="player_info_label_color">@color/primary</color>   <!-- "Tema:" en azul cyan -->
+    <color name="player_info_value_text">#333333</color>           <!-- Cita y predicador -->
+
+    <!-- ══════════════════════════════════════════════════════════════════════
+         7. PANTALLA JUEGO (JuegoFragment)
+    ══════════════════════════════════════════════════════════════════════ -->
+
+    <color name="trivia_titulo_text">@color/red_logo</color>
+    <color name="juego_background">@color/surface_color</color>
+    <color name="juego_placeholder_icon">@color/primary</color>
+    <color name="juego_placeholder_text">@color/primary</color>
+
+    <!-- ══════════════════════════════════════════════════════════════════════
+          8. PANTALLA PETICIONES — ajustado para fondo azul oscuro pergaminoacerca
+     ══════════════════════════════════════════════════════════════════════ -->
+    <color name="peticion_fondo">@color/surface_color</color>
+    <color name="peticion_card_fondo">#FFFFFF</color>
+    <color name="peticion_btn_fondo">@color/devocional_texto</color>            <!-- Cyan — resalta sobre el fondo -->
+    <color name="peticion_btn_texto">#FFFFFF</color>
+    <color name="peticion_titulo">@color/devocional_texto</color>              <!-- Negro — sobre pergamino claro -->
+    <color name="peticion_subtitulo">#FFFFFF</color>           <!-- Blanco — ya tiene fondo negro detrás -->
+    <color name="peticion_input_fondo">#FFFFFF</color>         <!-- Blanco — más limpio sobre pergamino -->
+    <color name="peticion_input_stroke">@color/devocional_texto</color>        <!-- Cyan — se ve bien -->
+    <color name="peticion_input_texto">#1A1A1A</color>         <!-- Negro — texto legible -->
+    <color name="peticion_input_hint">#888888</color>          <!-- Gris — hint sutil -->
+    <color name="peticion_confirmacion_titulo">#1A1A1A</color>
+    <color name="peticion_confirmacion_texto">#444444</color>
+    <color name="peticion_nueva_btn_texto">#1AAEE8</color>
+    <color name="peticion_nueva_btn_stroke">#1AAEE8</color>
+
+    <!-- ══════════════════════════════════════════════════════════════════════
+ devocional
+══════════════════════════════════════════════════════════════════════ -->
+    <color name="devocional_texto">@color/ic_launcher_background</color>
+
+    <!-- ══════════════════════════════════════════════════════════════════════
+    Letras del miniranking
+    ══════════════════════════════════════════════════════════════════════ -->
+    <color name="ranking_dificultad_text">@color/red_logo</color>
+
+
+    
+
+</resources>

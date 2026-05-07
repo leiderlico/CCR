@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/toolbar_background">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/toolbar_background"
+            app:layout_scrollFlags="noScroll"
+            app:titleTextColor="@android:color/white">
+
+            <ImageView
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/ic_ccr_logo"
+                android:scaleType="fitCenter"
+                android:layout_marginEnd="8dp"
+                android:contentDescription="Logo CCR" />
+
+            <!-- Título clickable para VersiculosFragment — muestra libro + capítulo con chevron -->
+            <LinearLayout
+                android:id="@+id/llCustomTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:visibility="gone"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:paddingVertical="6dp"
+                android:paddingHorizontal="4dp">
+
+                <TextView
+                    android:id="@+id/tvCustomTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:maxWidth="160dp"
+                    android:textColor="@android:color/white"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:maxLines="1"
+                    android:ellipsize="end" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="  ▾"
+                    android:textColor="#CCFFFFFF"
+                    android:textSize="15sp"
+                    android:layout_marginStart="2dp" />
+
+            </LinearLayout>
+
+            <!-- Botón selector de versión bíblica — visible solo en VersiculosFragment -->
+            <Button
+                android:id="@+id/btnVersion"
+                style="?attr/borderlessButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:text="RV1960 ▾"
+                android:textColor="@android:color/white"
+                android:textSize="13sp"
+                android:paddingHorizontal="8dp"
+                android:visibility="gone" />
+
+            <!-- Botón resaltar — visible solo en modo selección -->
+            <ImageButton
+                android:id="@+id/btnSeleccionResaltar"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="end"
+                android:src="@drawable/ic_resaltar"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:padding="8dp"
+                android:visibility="gone"
+                app:tint="#FFFFFF" />
+
+        </androidx.appcompat.widget.Toolbar>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <!-- Fragment container -->
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/nav_host_fragment"
+        android:name="androidx.navigation.fragment.NavHostFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:defaultNavHost="true"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        app:navGraph="@navigation/nav_graph" />
+
+    <!-- FAB micrófono — encima del BottomNav -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/micIndicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="72dp"
+        android:contentDescription="Activar/desactivar micrófono"
+        android:src="@drawable/ic_mic_off"
+        app:backgroundTint="@android:color/darker_gray"
+        app:fabCustomSize="37dp"
+        app:maxImageSize="29dp"
+        app:tint="@android:color/white" />
+
+    <!-- FAB búsqueda por texto — encima del mic -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/searchIndicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="118dp"
+        android:contentDescription="Buscar versículo por texto"
+        android:src="@drawable/ic_search"
+        app:backgroundTint="@android:color/darker_gray"
+        app:fabCustomSize="37dp"
+        app:maxImageSize="22dp"
+        app:tint="@android:color/white"
+        android:visibility="gone" />
+
+    <!-- Barra de búsqueda por texto — aparece encima de los FABs -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/searchBarCard"
+        android:layout_width="270dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="165dp"
+        app:cardCornerRadius="24dp"
+        app:cardElevation="8dp"
+        app:cardBackgroundColor="@color/surface_color"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingStart="16dp"
+            android:paddingEnd="4dp"
+            android:paddingVertical="4dp">
+
+            <EditText
+                android:id="@+id/etSearch"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@null"
+                android:hint="Buscar versículo..."
+                android:inputType="text"
+                android:imeOptions="actionSearch"
+                android:singleLine="true"
+                android:textSize="14sp"
+                android:maxLines="1" />
+
+            <ImageButton
+                android:id="@+id/btnCloseSearch"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:src="@drawable/ic_close"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:padding="6dp"
+                android:contentDescription="Cerrar búsqueda"
+                app:tint="?attr/colorOnSurface" />
+
+        </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- Loading overlay (silencioso) -->
+    <FrameLayout
+        android:id="@+id/loadingOverlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/transparent"
+        android:clickable="true"
+        android:focusable="true"
+        android:visibility="gone" />
+
+    <!-- Panel de sugerencias — encima del BottomNav -->
+    <FrameLayout
+        android:id="@+id/suggestionPanel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:paddingBottom="56dp"
+        android:visibility="gone">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#CC000000" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingHorizontal="16dp"
+                android:paddingTop="8dp"
+                android:paddingBottom="4dp"
+                android:gravity="end">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnClearAllSuggestions"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="Cerrar todo"
+                    android:insetTop="0dp"
+                    android:insetBottom="0dp"
+                    app:icon="@android:drawable/ic_menu_close_clear_cancel"
+                    app:iconTint="@android:color/white"
+                    app:iconGravity="textStart"
+                    app:iconPadding="0dp"
+                    style="@style/Widget.MaterialComponents.Button.TextButton" />
+            </LinearLayout>
+
+            <androidx.core.widget.NestedScrollView
+                android:id="@+id/suggestionsScrollView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxHeight="400dp">
+
+                <LinearLayout
+                    android:id="@+id/suggestionsContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="12dp"
+                    android:paddingBottom="12dp" />
+
+            </androidx.core.widget.NestedScrollView>
+
+        </LinearLayout>
+    </FrameLayout>
+
+    <!-- Panel colores resaltado — encima del toolbar resaltado -->
+    <LinearLayout
+        android:id="@+id/panelColores"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="56dp"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:background="@color/surface_color"
+        android:paddingHorizontal="12dp"
+        android:paddingVertical="10dp"
+        android:elevation="8dp"
+        android:visibility="gone">
+
+        <View android:id="@+id/colorChip1"
+            android:layout_width="32dp" android:layout_height="32dp"
+            android:layout_margin="6dp"
+            android:background="@drawable/bg_color_chip" />
+        <View android:id="@+id/colorChip2"
+            android:layout_width="32dp" android:layout_height="32dp"
+            android:layout_margin="6dp"
+            android:background="@drawable/bg_color_chip" />
+        <View android:id="@+id/colorChip3"
+            android:layout_width="32dp" android:layout_height="32dp"
+            android:layout_margin="6dp"
+            android:background="@drawable/bg_color_chip" />
+        <View android:id="@+id/colorChip4"
+            android:layout_width="32dp" android:layout_height="32dp"
+            android:layout_margin="6dp"
+            android:background="@drawable/bg_color_chip" />
+        <View android:id="@+id/colorChip5"
+            android:layout_width="32dp" android:layout_height="32dp"
+            android:layout_margin="6dp"
+            android:background="@drawable/bg_color_chip" />
+        <View android:id="@+id/colorChip6"
+            android:layout_width="32dp" android:layout_height="32dp"
+            android:layout_margin="6dp"
+            android:background="@drawable/bg_color_chip" />
+        <View android:id="@+id/colorChipBorrar"
+            android:layout_width="32dp" android:layout_height="32dp"
+            android:layout_margin="6dp"
+            android:background="@drawable/bg_color_chip_borrar" />
+
+    </LinearLayout>
+
+    <!-- BottomNavigationView — siempre al fondo -->
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNav"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:background="@drawable/bg_bottom_nav"
+        app:itemTextColor="@color/bottom_nav_item_color"
+        app:menu="@menu/bottom_nav_menu"
+        app:labelVisibilityMode="labeled"
+        app:itemIconSize="28dp" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="12dp"
+    android:layout_marginVertical="4dp"
+    android:clickable="true"
+    android:focusable="true"
+    app:cardBackgroundColor="@color/video_card_background"
+    app:cardElevation="0dp"
+    app:strokeWidth="1dp"
+    app:strokeColor="@color/video_card_stroke"
+    app:cardCornerRadius="8dp"
+    app:rippleColor="@color/highlight_color">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="88dp"
+        android:orientation="horizontal"
+        android:paddingVertical="6dp"
+        android:paddingHorizontal="12dp">
+
+        <!-- Miniatura izquierda con fecha superpuesta -->
+        <FrameLayout
+            android:layout_width="120dp"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/ivVideoThumbnail"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:background="@color/video_thumbnail_background"
+                android:contentDescription="Miniatura del video" />
+
+            <TextView
+                android:id="@+id/tvVideoFecha"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|start"
+                android:layout_margin="5dp"
+                android:paddingHorizontal="5dp"
+                android:paddingVertical="2dp"
+                android:textSize="10sp"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold"
+                android:background="#99000000"
+                android:visibility="gone" />
+
+        </FrameLayout>
+
+        <!-- Contenido derecho -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:paddingStart="10dp">
+
+            <TextView
+                android:id="@+id/tvVideoTitulo"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                android:textColor="@color/video_titulo_text"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:lineSpacingMultiplier="1.1" />
+
+            <TextView
+                android:id="@+id/tvVideoPredicador"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/tvVideoTitulo"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="3dp"
+                android:textSize="12sp"
+                android:textColor="@color/video_predicador_text" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipLibro"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/tvVideoPredicador"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginTop="2dp"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                android:textColor="@color/video_chip_libro_text"
+                android:visibility="gone"
+                app:chipMinHeight="26dp"
+                app:chipBackgroundColor="@color/video_chip_libro_background"
+                style="@style/Widget.MaterialComponents.Chip.Action" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>
