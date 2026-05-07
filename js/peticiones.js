@@ -116,7 +116,10 @@ function renderListaVideos(videos, emptyText) {
     const card = document.createElement('div');
     card.className = 'video-card';
     card.innerHTML = `
-      <img class="video-thumb" src="${thumb}" alt="${escapeHtml(titulo)}" onerror="this.src='assets/img/ic_video.png'"/>
+      <div class="video-thumb-wrap">
+        <img class="video-thumb" src="${thumb}" alt="${escapeHtml(titulo)}" onerror="this.src='assets/img/ic_video.png'"/>
+        ${v.fecha ? `<span class="video-date-badge">${escapeHtml(v.fecha)}</span>` : ''}
+      </div>
       <div class="video-info">
         <div class="video-title">${escapeHtml(titulo)}</div>
         <div class="video-desc">${escapeHtml(desc)}</div>

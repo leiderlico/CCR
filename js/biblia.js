@@ -202,13 +202,9 @@ function mostrarSelectorVersion() {
   list.innerHTML = '';
 
   VERSIONES.filter(ver => !ver.hidden).forEach(ver => {
-    const isCached = !!localStorage.getItem('bible_' + ver.id);
     const el = document.createElement('div');
     el.className = 'version-item' + (ver.id === currentVersion ? ' active-version' : '');
-    el.innerHTML = `
-      <span>${escapeHtml(ver.nombre)}</span>
-      <span class="version-badge ${ver.local || isCached ? '' : 'download'}">${ver.id === currentVersion ? 'OK ' : ''}${ver.id}${!ver.local && !isCached ? ' bajar' : ''}</span>
-    `;
+    el.innerHTML = `<span>${escapeHtml(ver.nombre)}</span>`;
     el.onclick = () => {
       cerrarModalVersion();
       loadVersion(ver.id);
