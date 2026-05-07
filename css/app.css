@@ -1,19 +1,20 @@
 /* ── Variables ── */
 :root {
-  --bg: #121212;
-  --bg2: #1e1e2e;
-  --bg3: #252538;
-  --surface: #1e1e2e;
-  --surface2: #2a2a3e;
-  --primary: #7b5ea7;
-  --primary-light: #9b7ec8;
-  --accent: #f5c518;
-  --text: #e8e8f0;
-  --text2: #a0a0c0;
-  --text3: #6a6a8a;
-  --border: #2e2e4a;
-  --card: #252538;
-  --card2: #2d2d48;
+  --bg: #000000;
+  --bg2: #0e2231;
+  --bg3: #152230;
+  --surface: #000000;
+  --surface2: #152230;
+  --primary: #1aaee8;
+  --primary-light: #6acde8;
+  --accent: #f5d800;
+  --red-logo: #e05555;
+  --text: #e8f4fc;
+  --text2: #bbccdd;
+  --text3: #888888;
+  --border: #1a4a6a;
+  --card: #152230;
+  --card2: #0d2a3a;
   --toolbar-h: 56px;
   --nav-h: 62px;
   --radius: 14px;
@@ -22,18 +23,18 @@
   --radio-subtitle: #a0a0c0;
 }
 body.light {
-  --bg: #f0eff5;
-  --bg2: #ffffff;
-  --bg3: #e8e7f0;
+  --bg: #f5fbff;
+  --bg2: #1aaee8;
+  --bg3: #ffffff;
   --surface: #ffffff;
-  --surface2: #f5f4fb;
+  --surface2: #eaf6fd;
   --text: #1a1a2e;
   --text2: #4a4a6a;
-  --text3: #8888aa;
-  --border: #ddddf0;
+  --text3: #888888;
+  --border: #d0e8f5;
   --card: #ffffff;
-  --card2: #f5f4fb;
-  --shadow: 0 2px 12px rgba(100,80,150,0.12);
+  --card2: #eaf6fd;
+  --shadow: 0 2px 12px rgba(26,174,232,0.14);
   --radio-subtitle: #4a4a6a;
 }
 
@@ -61,7 +62,7 @@ html, body { height: 100%; width: 100%; overflow: hidden; background: var(--bg);
   position: relative; z-index: 10;
   box-shadow: 0 2px 8px rgba(0,0,0,0.3);
 }
-#toolbarTitle { color: #fff; font-family: 'Cinzel', serif; font-size: 18px; font-weight: 700; flex: 1; text-align: center; letter-spacing: 1px; }
+#toolbarTitle { color: var(--accent); font-family: 'Cinzel', serif; font-size: 18px; font-weight: 700; flex: 1; text-align: center; letter-spacing: 1px; }
 .toolbar-btn { background: none; border: none; cursor: pointer; padding: 6px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
 .toolbar-btn svg { width: 24px; height: 24px; fill: #fff; }
 .toolbar-btn img { filter: brightness(10); }
@@ -90,7 +91,7 @@ html, body { height: 100%; width: 100%; overflow: hidden; background: var(--bg);
   color: var(--text3); font-size: 10px; font-family: 'Lora', serif; transition: color .2s;
 }
 .nav-item img { width: 22px; height: 22px; opacity: 0.5; transition: opacity .2s; filter: var(--nav-icon-filter, none); }
-.nav-item.active { color: var(--primary-light); }
+.nav-item.active { color: var(--accent); }
 .nav-item.active img { opacity: 1; filter: none; }
 body.light .nav-item img { filter: invert(0.5) sepia(1) saturate(2) hue-rotate(220deg); }
 body.light .nav-item.active img { filter: none; }
@@ -108,6 +109,7 @@ body.light .nav-item.active img { filter: none; }
 /* ── Loading ── */
 .loading-center { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 200px; gap: 16px; color: var(--text2); }
 .spinner { width: 36px; height: 36px; border: 3px solid var(--border); border-top-color: var(--primary); border-radius: 50%; animation: spin .8s linear infinite; }
+.empty-message { padding: 24px; color: var(--text2); text-align: center; line-height: 1.6; }
 
 /* ══════════════════════════════════════════════════════
    BIBLIA

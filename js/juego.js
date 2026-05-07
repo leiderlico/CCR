@@ -101,9 +101,9 @@ async function iniciarJuego(dificultad) {
   juegoState.correctas = 0;
   juegoState.preguntaActual = 0;
 
-  // Load questions from GitHub
+  // Las preguntas vienen locales, igual que en la app Android.
   try {
-    const url = `' + (window.location.href.includes('github.io') ? window.location.href.split('/').slice(0,4).join('/') : '.') + '/data/preguntas_biblicas.json'`;
+    const url = getAppBaseUrl() + '/data/preguntas_biblicas.json';
     const cached = sessionStorage.getItem('preguntas');
     let todas;
     if (cached) {
@@ -115,6 +115,7 @@ async function iniciarJuego(dificultad) {
     }
     const filtradas = todas.filter(p => p.dificultad === dificultad);
     juegoState.preguntas = shuffleArr(filtradas).slice(0, 10);
+    if (juegoState.preguntas.length === 0) throw new Error('Sin preguntas para ' + dificultad);
   } catch(e) {
     alert('No se pudieron cargar las preguntas. Verifica tu conexión.');
     return;
@@ -218,4 +219,10 @@ function shuffleArr(arr) {
     [a[i], a[j]] = [a[j], a[i]];
   }
   return a;
+}
+
+function getAppBaseUrl() {
+  const loc = window.location.href;
+  if (loc.includes('github.io')) return loc.split('/').slice(0, 4).join('/');
+  return '.';
 }
