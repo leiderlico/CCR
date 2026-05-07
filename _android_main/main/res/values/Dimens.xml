@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <!-- Ancho del popup de selección de versión bíblica — justo para las siglas -->
-    <dimen name="version_popup_width">90dp</dimen>
-</resources>
