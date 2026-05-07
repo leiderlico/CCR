@@ -10,9 +10,11 @@ async function enviarPeticion() {
 
   try {
     const body = JSON.stringify({ action: 'peticion', texto });
-    await fetch(PET_SCRIPT, { method: 'POST', body, headers: { 'Content-Type': 'application/json' } });
+    await fetch(PET_SCRIPT, { method: 'POST', body, headers: { 'Content-Type': 'text/plain;charset=utf-8' } });
   } catch(e) {
-    // La app Android tambien confirma localmente si falla la red.
+    try {
+      await fetch(PET_SCRIPT, { method: 'POST', body: JSON.stringify({ action: 'peticion', texto }), mode: 'no-cors' });
+    } catch(_) {}
   }
 
   document.getElementById('petFormHeader').classList.add('hidden');
@@ -68,7 +70,7 @@ async function cargarVideos(grupo) {
     filtrados.forEach(v => {
       const videoId = v.videoId || extraerYoutubeId(v.urlYoutube);
       const titulo = v.titulo || 'Sin titulo';
-      const desc = [v.predicador, v.fecha, v.cita].filter(Boolean).join(' - ');
+      const desc = v.predicador || '';
       const thumb = videoId ? `https://img.youtube.com/vi/${videoId}/mqdefault.jpg` : 'assets/img/ic_video.png';
 
       const card = document.createElement('div');
@@ -78,9 +80,10 @@ async function cargarVideos(grupo) {
         <div class="video-info">
           <div class="video-title">${escapeHtml(titulo)}</div>
           <div class="video-desc">${escapeHtml(desc)}</div>
+          ${v.cita ? `<div class="video-chip">${escapeHtml(v.cita)}</div>` : ''}
         </div>
       `;
-      card.onclick = () => abrirPlayer(v.urlYoutube, titulo, desc);
+      card.onclick = () => abrirPlayer(v, titulo);
       lista.appendChild(card);
     });
   } catch(e) {
@@ -95,15 +98,15 @@ let ytApiReady = false;
 
 window.onYouTubeIframeAPIReady = () => { ytApiReady = true; };
 
-function abrirPlayer(urlYoutube, titulo, desc) {
+function abrirPlayer(video, titulo) {
+  const urlYoutube = typeof video === 'string' ? video : video.urlYoutube;
   const videoId = extraerYoutubeId(urlYoutube) || urlYoutube;
   if (!videoId) {
     alert('Este video no tiene una URL de YouTube valida.');
     return;
   }
 
-  document.getElementById('playerTitulo').textContent = titulo;
-  document.getElementById('playerDesc').textContent = desc;
+  renderPlayerInfo(typeof video === 'string' ? { titulo, urlYoutube } : video);
   pushScreen('screenPlayer', titulo);
 
   const playerEl = document.getElementById('ytPlayer');
@@ -143,7 +146,8 @@ function parseCSV(text) {
     const libroId = parseInt(cleanCSV(cols[5]) || '0', 10) || 0;
     const capitulo = parseInt(cleanCSV(cols[6]) || '0', 10) || 0;
     const versiculo = cleanCSV(cols[7]);
-    const cita = libroId && capitulo ? `Libro ${libroId} ${capitulo}${versiculo ? ':' + versiculo : ''}` : '';
+    const libroNombre = LIBROS_BIBLIA[libroId] || '';
+    const cita = libroNombre && capitulo ? `${libroNombre} ${capitulo}${versiculo ? ':' + versiculo : ''}` : '';
 
     return {
       titulo,
@@ -210,6 +214,38 @@ function extraerYoutubeId(url) {
   }
   return '';
 }
+
+function renderPlayerInfo(video) {
+  const info = document.getElementById('playerInfo');
+  const titulo = video.titulo || 'Sin titulo';
+  info.innerHTML = `
+    <h3>${escapeHtml(titulo)}</h3>
+    <div class="player-meta">
+      ${video.cita ? `<div class="player-meta-item full"><span class="player-meta-label">Cita</span><span class="player-meta-value cita">${escapeHtml(video.cita)}</span></div>` : ''}
+      ${video.predicador ? `<div class="player-meta-item"><span class="player-meta-label">Predicador</span><span class="player-meta-value">${escapeHtml(video.predicador)}</span></div>` : ''}
+      ${video.fecha ? `<div class="player-meta-item"><span class="player-meta-label">Fecha</span><span class="player-meta-value">${escapeHtml(video.fecha)}</span></div>` : ''}
+    </div>
+  `;
+}
+
+const LIBROS_BIBLIA = {
+  1: 'Genesis', 2: 'Exodo', 3: 'Levitico', 4: 'Numeros', 5: 'Deuteronomio',
+  6: 'Josue', 7: 'Jueces', 8: 'Rut', 9: '1 Samuel', 10: '2 Samuel',
+  11: '1 Reyes', 12: '2 Reyes', 13: '1 Cronicas', 14: '2 Cronicas',
+  15: 'Esdras', 16: 'Nehemias', 17: 'Ester', 18: 'Job', 19: 'Salmos',
+  20: 'Proverbios', 21: 'Eclesiastes', 22: 'Cantares', 23: 'Isaias',
+  24: 'Jeremias', 25: 'Lamentaciones', 26: 'Ezequiel', 27: 'Daniel',
+  28: 'Oseas', 29: 'Joel', 30: 'Amos', 31: 'Abdias', 32: 'Jonas',
+  33: 'Miqueas', 34: 'Nahum', 35: 'Habacuc', 36: 'Sofonias',
+  37: 'Hageo', 38: 'Zacarias', 39: 'Malaquias', 40: 'Mateo',
+  41: 'Marcos', 42: 'Lucas', 43: 'Juan', 44: 'Hechos', 45: 'Romanos',
+  46: '1 Corintios', 47: '2 Corintios', 48: 'Galatas', 49: 'Efesios',
+  50: 'Filipenses', 51: 'Colosenses', 52: '1 Tesalonicenses',
+  53: '2 Tesalonicenses', 54: '1 Timoteo', 55: '2 Timoteo', 56: 'Tito',
+  57: 'Filemon', 58: 'Hebreos', 59: 'Santiago', 60: '1 Pedro',
+  61: '2 Pedro', 62: '1 Juan', 63: '2 Juan', 64: '3 Juan',
+  65: 'Judas', 66: 'Apocalipsis'
+};
 
 function normalizar(texto) {
   return (texto || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toUpperCase().trim();

@@ -29,6 +29,7 @@ window.addEventListener('DOMContentLoaded', () => {
     document.getElementById('app').classList.remove('hidden');
     document.getElementById('app').classList.add('active');
     initBrowserHistory();
+    ensureGrupoActions();
     showTab('biblia');
     setToolbarForRoot('biblia');
     replaceHistoryState();
@@ -45,6 +46,16 @@ function toggleDarkMode() {
   localStorage.setItem('ccr_dark', state.darkMode ? 'dark' : 'light');
   updateDarkIcon();
   updatePergaminoImage();
+}
+
+function ensureGrupoActions() {
+  document.querySelectorAll('.grupo-card').forEach(card => {
+    if (card.querySelector('.grupo-action')) return;
+    const action = document.createElement('span');
+    action.className = 'grupo-action';
+    action.innerHTML = '<img src="assets/img/ic_video.png" alt=""/>';
+    card.appendChild(action);
+  });
 }
 
 function updateDarkIcon() {
