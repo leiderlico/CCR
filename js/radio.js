@@ -120,7 +120,8 @@ function updatePlayPauseBtn(playing) {
 }
 
 function updateToolbarRadioIcon() {
-  const icon = document.querySelector('#btnToolbarRadio img');
+  const icon = document.getElementById('toolbarRadioIcon');
   if (!icon) return;
-  icon.src = radioPlaying ? 'assets/img/ic_radioon.png' : 'assets/img/ic_radio.png';
+  icon.classList.toggle('radio-on', radioPlaying);
+  icon.classList.toggle('radio-off', !radioPlaying);
 }

@@ -312,6 +312,7 @@ function extraerYoutubeId(url) {
 function renderPlayerInfo(video) {
   const info = document.getElementById('playerInfo');
   const titulo = video.titulo || 'Sin titulo';
+  const hasBible = Number(video.libroId) && Number(video.capitulo);
   info.innerHTML = `
     <h3>${escapeHtml(titulo)}</h3>
     <div class="player-meta compact">
@@ -319,7 +320,7 @@ function renderPlayerInfo(video) {
       ${video.predicador ? `<span class="player-predicador">${escapeHtml(video.predicador)}</span>` : ''}
       ${video.fecha ? `<span class="player-fecha">${escapeHtml(video.fecha)}</span>` : ''}
     </div>
-    <div id="playerBiblePanel" class="player-bible-panel hidden"></div>
+    <div id="playerBiblePanel" class="player-bible-panel ${hasBible ? '' : 'hidden'}">${hasBible ? getPlayerBibleHtml(Number(video.libroId), Number(video.capitulo)) : ''}</div>
   `;
 }
 
@@ -331,10 +332,15 @@ function togglePlayerBible(libroId, capitulo) {
     panel.classList.add('hidden');
     return;
   }
+  panel.innerHTML = getPlayerBibleHtml(libroId, capitulo);
+  panel.classList.remove('hidden');
+}
+
+function getPlayerBibleHtml(libroId, capitulo) {
   const libroNombre = LIBROS_BIBLIA[libroId] || `Libro ${libroId}`;
   const versiculos = (window.bibleData || bibleData || { versiculos: [] }).versiculos
     .filter(v => Number(v.libro_id) === Number(libroId) && Number(v.capitulo) === Number(capitulo));
-  panel.innerHTML = `
+  return `
     <div class="player-bible-head">
       <strong>${escapeHtml(libroNombre)} ${capitulo}</strong>
       <span>${escapeHtml(currentVersion || '')}</span>
@@ -343,7 +349,6 @@ function togglePlayerBible(libroId, capitulo) {
       ${versiculos.map(v => `<p><b>${v.versiculo}</b> ${escapeHtml(v.texto)}</p>`).join('') || '<p>No se encontraron versiculos para esta cita.</p>'}
     </div>
   `;
-  panel.classList.remove('hidden');
 }
 
 const LIBROS_BIBLIA = {
