@@ -55,14 +55,18 @@ html, body { height: 100%; width: 100%; overflow: hidden; background: var(--bg);
 /* ── Toolbar ── */
 #toolbar {
   height: var(--toolbar-h);
-  background: var(--primary);
+  background: var(--bg2);
   display: flex; align-items: center; gap: 8px;
   padding: 0 12px;
   flex-shrink: 0;
   position: relative; z-index: 10;
   box-shadow: 0 2px 8px rgba(0,0,0,0.3);
 }
-#toolbarTitle { color: var(--accent); font-family: 'Cinzel', serif; font-size: 18px; font-weight: 700; flex: 1; text-align: center; letter-spacing: 1px; }
+#toolbarBrand { flex: 1; min-width: 0; display: flex; align-items: center; gap: 8px; }
+#toolbarLogo { order: 2; width: 42px; height: 42px; object-fit: contain; object-position: left center; display: block; }
+#toolbarTitle { color: var(--accent); font-family: 'Cinzel', serif; font-size: 18px; font-weight: 700; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; letter-spacing: 1px; }
+body.root-screen #toolbarTitle { order: 1; flex: 0 0 auto; color: #fff; }
+body:not(.root-screen) #toolbarLogo { display: none; }
 .toolbar-btn { background: none; border: none; cursor: pointer; padding: 6px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
 .toolbar-btn svg { width: 24px; height: 24px; fill: #fff; }
 .toolbar-btn img { filter: brightness(10); }
