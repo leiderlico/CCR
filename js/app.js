@@ -212,7 +212,7 @@ function abrirPeticionesDesdeMenu() {
 
 function mostrarAcercaCCR() {
   closeToolbarMenu();
-  alert('Centro Cristiano de Restauracion CCR');
+  pushScreen('screenAcerca', 'Acerca de CCR');
 }
 
 async function compartirApp() {

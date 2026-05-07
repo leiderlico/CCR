@@ -29,6 +29,7 @@ function initRadio() {
     card.onclick = () => seleccionarEstacion(i);
     lista.appendChild(card);
   });
+  updateToolbarRadioIcon();
 }
 
 function seleccionarEstacion(i) {
@@ -115,4 +116,11 @@ function setRadioEstado(texto, live) {
 function updatePlayPauseBtn(playing) {
   document.getElementById('iconPlay').classList.toggle('hidden', playing);
   document.getElementById('iconPause').classList.toggle('hidden', !playing);
+  updateToolbarRadioIcon();
+}
+
+function updateToolbarRadioIcon() {
+  const icon = document.querySelector('#btnToolbarRadio img');
+  if (!icon) return;
+  icon.src = radioPlaying ? 'assets/img/ic_radioon.png' : 'assets/img/ic_radio.png';
 }

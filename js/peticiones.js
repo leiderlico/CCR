@@ -35,6 +35,9 @@ const SHEET_CSV = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTdak_SUYm9hT
 
 window.currentGrupoNombre = '';
 let videosCache = null;
+let currentVideoBase = [];
+let currentVideoQuery = '';
+let currentVideoPredicador = null;
 
 function abrirVideos(grupoNombre) {
   const grupo = normalizarGrupo(grupoNombre);
@@ -54,7 +57,8 @@ async function cargarVideos(grupo) {
       .filter(v => normalizar(v.grupo) === normalizar(grupo))
       .sort((a, b) => (b.fechaOrden || 0) - (a.fechaOrden || 0));
 
-    renderListaVideos(filtrados, 'No hay videos disponibles aun.');
+    setVideoContext(filtrados);
+    renderListaVideosFiltrada();
   } catch(e) {
     document.getElementById('videosLoading').classList.add('hidden');
     document.getElementById('listaVideos').innerHTML = '<p style="padding:24px;color:var(--text2);text-align:center">Error cargando videos.</p>';
@@ -85,7 +89,8 @@ async function abrirVideosCapitulo(libroId, capitulo, titulo) {
   document.getElementById('listaVideos').innerHTML = '';
   try {
     const videos = await getVideosPorCapitulo(libroId, capitulo);
-    renderListaVideos(videos, 'No hay predicas registradas para este capitulo.');
+    setVideoContext(videos, `Predicas de ${nombre}`);
+    renderListaVideosFiltrada('No hay predicas registradas para este capitulo.');
   } catch(e) {
     document.getElementById('videosLoading').classList.add('hidden');
     document.getElementById('listaVideos').innerHTML = '<p style="padding:24px;color:var(--text2);text-align:center">Error cargando videos.</p>';
@@ -121,6 +126,65 @@ function renderListaVideos(videos, emptyText) {
     card.onclick = () => abrirPlayer(v, titulo);
     lista.appendChild(card);
   });
+}
+
+function setVideoContext(videos, statusText = '') {
+  currentVideoBase = [...videos];
+  currentVideoQuery = '';
+  currentVideoPredicador = null;
+  const search = document.getElementById('videoSearch');
+  if (search) search.value = '';
+  const status = document.getElementById('videoStatus');
+  if (status) {
+    status.textContent = statusText;
+    status.classList.toggle('hidden', !statusText);
+  }
+  renderVideoChips();
+}
+
+function renderVideoChips() {
+  const chips = document.getElementById('videoChips');
+  if (!chips) return;
+  const predicadores = [...new Set(currentVideoBase.map(v => v.predicador).filter(Boolean))].sort();
+  chips.innerHTML = `
+    <button class="video-chip-filter active" data-predicador="" onclick="filtrarVideosPorPredicador(null, this)">Mas recientes</button>
+    ${predicadores.map(p => `<button class="video-chip-filter" data-predicador="${escapeHtml(p)}" onclick='filtrarVideosPorPredicador(${JSON.stringify(p)}, this)'>${escapeHtml(p)}</button>`).join('')}
+  `;
+}
+
+function filtrarVideosPorPredicador(predicador, btn) {
+  currentVideoPredicador = predicador || null;
+  document.querySelectorAll('.video-chip-filter').forEach(chip => chip.classList.remove('active'));
+  btn?.classList.add('active');
+  renderListaVideosFiltrada();
+}
+
+function buscarVideosActuales(query) {
+  currentVideoQuery = query || '';
+  renderListaVideosFiltrada();
+}
+
+function limpiarBusquedaVideos() {
+  const input = document.getElementById('videoSearch');
+  if (input) input.value = '';
+  currentVideoQuery = '';
+  renderListaVideosFiltrada();
+}
+
+function renderListaVideosFiltrada(emptyText = 'No hay videos disponibles aun.') {
+  let filtrados = [...currentVideoBase];
+  const query = normalizar(currentVideoQuery);
+  if (query) {
+    filtrados = filtrados.filter(v =>
+      normalizar(v.titulo).includes(query) ||
+      normalizar(v.predicador).includes(query) ||
+      normalizar(v.cita).includes(query)
+    );
+  }
+  if (currentVideoPredicador) {
+    filtrados = filtrados.filter(v => v.predicador === currentVideoPredicador);
+  }
+  renderListaVideos(filtrados, emptyText || 'Sin resultados.');
 }
 
 /* YOUTUBE PLAYER */

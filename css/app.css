@@ -72,6 +72,7 @@ body:not(.root-screen) #toolbarLogo { display: none; }
 .toolbar-btn svg { width: 24px; height: 24px; fill: #fff; }
 .toolbar-btn img { filter: brightness(10); }
 .toolbar-icon-img { width: 25px; height: 25px; object-fit: contain; }
+#btnToolbarRadio img { filter: brightness(0) invert(1) !important; opacity: 1; }
 #toolbarRight { display: flex; align-items: center; gap: 4px; }
 .btn-version { background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.4); color: #fff; font-size: 13px; font-weight: 600; padding: 5px 12px; border-radius: 20px; cursor: pointer; font-family: 'Lora', serif; }
 .toolbar-menu {
@@ -258,6 +259,25 @@ body:not(.root-screen) #toolbarLogo { display: none; }
 .grupo-card .grupo-action img { width: 18px; height: 18px; padding: 0; background: transparent; border-radius: 0; filter: brightness(0) invert(1); }
 
 .videos-list { padding: 8px 12px 80px; display: flex; flex-direction: column; gap: 12px; }
+.videos-tools { padding: 10px 12px 4px; background: var(--surface); position: sticky; top: 0; z-index: 6; border-bottom: 1px solid var(--border); }
+.video-search {
+  height: 48px;
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface2);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 10px;
+}
+.video-search span { color: var(--primary); font-size: 22px; line-height: 1; }
+.video-search input { flex: 1; min-width: 0; border: 0; outline: 0; background: transparent; color: var(--text); font: 600 14px 'Lora', Georgia, serif; }
+.video-search button { width: 28px; height: 28px; border: 0; border-radius: 50%; background: transparent; color: var(--text2); font-size: 22px; cursor: pointer; }
+.video-chips { display: flex; gap: 8px; overflow-x: auto; padding: 8px 0 2px; scrollbar-width: none; }
+.video-chips::-webkit-scrollbar { display: none; }
+.video-chip-filter { flex: 0 0 auto; border: 1px solid var(--border); border-radius: 999px; background: var(--surface2); color: var(--text2); padding: 8px 12px; font: 700 12px 'Lora', Georgia, serif; cursor: pointer; }
+.video-chip-filter.active { background: var(--primary); border-color: var(--primary); color: #fff; }
+.video-status { color: var(--primary); font-size: 12px; font-weight: 700; padding: 5px 3px 2px; }
 .video-card {
   background: var(--card); border-radius: var(--radius); border: 1px solid var(--border);
   overflow: hidden; cursor: pointer; display: flex; gap: 12px; align-items: center;
@@ -297,6 +317,7 @@ body:not(.root-screen) #toolbarLogo { display: none; }
    JUEGO
 ══════════════════════════════════════════════════════ */
 .juego-panel { position: relative; min-height: calc(100vh - var(--toolbar-h) - var(--nav-h)); display: flex; align-items: flex-start; justify-content: center; padding: 28px 20px 92px; overflow: hidden; }
+#panelVerificando { align-items: center; }
 .fondo-juegos { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 1; pointer-events: none; }
 .juego-card {
   position: relative; z-index: 1; background: transparent;
@@ -310,6 +331,7 @@ body:not(.root-screen) #toolbarLogo { display: none; }
 .juego-input:focus { border-color: var(--primary); background: #fff; }
 .juego-btn { width: 100%; min-height: 54px; padding: 14px; background: var(--primary); color: #fff; border: none; border-radius: 6px; font-size: 16px; font-weight: 800; cursor: pointer; font-family: 'Lora', Georgia, serif; letter-spacing: .5px; transition: background .2s; text-transform: uppercase; }
 .juego-btn:active { background: var(--primary-light); }
+.juego-btn-outline { background: transparent; border: 1.5px solid var(--primary); color: var(--primary); }
 .dificultad-btns { display: flex; flex-direction: column; gap: 10px; width: 100%; }
 .btn-dif { width: 100%; height: 50px; object-fit: fill; cursor: pointer; transition: transform .15s; }
 .btn-dif:active { transform: scale(0.96); }
@@ -339,6 +361,21 @@ body:not(.root-screen) #toolbarLogo { display: none; }
 .ranking-medal .ranking-nombre { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 800; }
 .ranking-medal .ranking-pts { font-size: 11px; font-weight: 800; opacity: .8; }
 .resultado-texto { font-size: 26px; font-weight: 800; color: var(--red-logo); font-family: 'Lora', Georgia, serif; text-align: center; }
+.ranking-loading { min-height: calc(100vh - var(--toolbar-h)); display: grid; place-items: center; }
+.ranking-completo { padding: 16px 16px 92px; background: #f7fbff; min-height: 100%; }
+body.dark .ranking-completo { background: var(--bg); }
+.ranking-section { margin-bottom: 20px; }
+.ranking-section h3 { font-size: 13px; font-weight: 800; margin: 0 0 6px 4px; letter-spacing: .5px; }
+.ranking-section.facil h3 { color: var(--primary); }
+.ranking-section.medio h3 { color: var(--red-logo); }
+.ranking-section.dificil h3 { color: #333; }
+body.dark .ranking-section.dificil h3 { color: var(--text); }
+.ranking-full-row { min-height: 42px; display: flex; align-items: center; gap: 10px; padding: 9px 12px; color: #273445; }
+body.dark .ranking-full-row { color: var(--text); }
+.ranking-full-row:nth-child(even) { background: rgba(0,0,0,.04); }
+.ranking-full-pos { width: 34px; text-align: center; font-weight: 800; }
+.ranking-full-name { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 14px; }
+.ranking-full-row strong { color: var(--primary); font-size: 14px; }
 
 /* ══════════════════════════════════════════════════════
    RADIO
@@ -397,6 +434,28 @@ body:not(.root-screen) #toolbarLogo { display: none; }
 .pet-ok-icon { font-size: 60px; margin-bottom: 16px; }
 .pet-confirmacion h3 { font-family: 'Cinzel', serif; font-size: 22px; color: var(--text); margin-bottom: 8px; }
 .pet-confirmacion p { font-size: 14px; color: var(--text2); margin-bottom: 16px; }
+
+/* Acerca */
+.acerca-wrap { position: relative; min-height: 100%; overflow: hidden; }
+.acerca-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.acerca-content {
+  position: relative;
+  z-index: 1;
+  min-height: calc(100vh - var(--toolbar-h));
+  padding: 36px 28px 92px;
+  color: #fff;
+}
+.acerca-logo { display: block; width: 88px; height: 88px; object-fit: contain; margin: 0 auto 16px; filter: none; }
+.acerca-content h2 { text-align: center; font-size: 28px; font-weight: 800; letter-spacing: 2px; margin-bottom: 4px; }
+.acerca-sub { text-align: center; font-size: 16px; font-style: italic; color: #cce8ff; margin-bottom: 22px; }
+.acerca-line { height: 2px; background: rgba(255,255,255,.25); margin: 0 0 24px; }
+.acerca-short-line { width: 60px; height: 2px; background: rgba(255,255,255,.38); margin: 10px auto 24px; }
+.acerca-content h3 { text-align: center; font-size: 16px; color: #99ccff; letter-spacing: 2px; margin-bottom: 19px; }
+.acerca-content p { font-size: 17px; line-height: 1.6; margin-bottom: 14px; }
+.acerca-pastores { text-align: center; font-size: 18px !important; font-weight: 800; font-style: italic; color: #cce8ff; }
+.acerca-content blockquote { text-align: center; color: #cce8ff; font-size: 18px; font-style: italic; line-height: 1.5; margin: 0 0 6px; }
+.acerca-ref { text-align: center; color: #99ccff; font-size: 14px !important; font-weight: 800; margin-bottom: 24px !important; }
+.acerca-version { text-align: center; color: rgba(255,255,255,.5); font-size: 13px !important; letter-spacing: 1px; }
 
 /* ══════════════════════════════════════════════════════
    MODAL VERSION

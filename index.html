@@ -35,7 +35,7 @@
     </div>
     <div id="toolbarRight">
       <button id="btnToolbarRadio" class="toolbar-btn" onclick="navTo('radio', null)" title="Radio">
-        <img src="assets/img/ic_radioon.png" alt="Radio" class="toolbar-icon-img"/>
+        <img src="assets/img/ic_radio.png" alt="Radio" class="toolbar-icon-img"/>
       </button>
       <button id="btnVersion" class="btn-version hidden" onclick="mostrarSelectorVersion()"></button>
       <button id="btnDarkMode" class="toolbar-btn" onclick="toggleDarkMode()">
@@ -129,6 +129,15 @@
 
     <!-- VIDEOS LIST -->
     <div id="screenVideos" class="page hidden">
+      <div class="videos-tools">
+        <div class="video-search">
+          <span>⌕</span>
+          <input id="videoSearch" type="search" placeholder="Buscar predicas..." oninput="buscarVideosActuales(this.value)"/>
+          <button onclick="limpiarBusquedaVideos()" title="Limpiar">×</button>
+        </div>
+        <div id="videoChips" class="video-chips"></div>
+        <div id="videoStatus" class="video-status hidden"></div>
+      </div>
       <div id="videosLoading" class="loading-center"><div class="spinner"></div><p>Cargando videos…</p></div>
       <div id="listaVideos" class="videos-list"></div>
     </div>
@@ -174,6 +183,7 @@
             <img src="assets/img/btndificil.png" class="btn-dif" onclick="iniciarJuego('dificil')" alt="Difícil"/>
           </div>
           <div id="rankingBox" class="ranking-box hidden"></div>
+          <button class="juego-btn juego-btn-outline" onclick="abrirRankingJuego()">Ver detalles</button>
         </div>
       </div>
       <!-- Panel: Jugando -->
@@ -195,8 +205,15 @@
           <h2>¡Resultado!</h2>
           <p id="resultadoTexto" class="resultado-texto"></p>
           <button class="juego-btn" onclick="volverDificultad()">Jugar de nuevo</button>
+          <button class="juego-btn juego-btn-outline" onclick="abrirRankingJuego()">Ver ranking</button>
         </div>
       </div>
+    </div>
+
+    <!-- RANKING -->
+    <div id="screenRanking" class="page hidden">
+      <div id="rankingLoading" class="ranking-loading hidden"><div class="spinner"></div></div>
+      <div id="rankingCompleto" class="ranking-completo"></div>
     </div>
 
     <!-- RADIO -->
@@ -236,6 +253,33 @@
           <p>Tu petición ha sido recibida. Estamos orando por ti.</p>
           <button class="pet-btn" onclick="nuevaPeticion()">Nueva Petición</button>
           <button class="pet-btn pet-btn-outline" onclick="goBack()">Volver</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ACERCA -->
+    <div id="screenAcerca" class="page hidden">
+      <div class="acerca-wrap">
+        <img src="assets/img/pergaminodevocionalnight.jpg" class="acerca-bg" alt=""/>
+        <div class="acerca-content">
+          <img src="assets/img/logoinicio.png" class="acerca-logo" alt="CCR"/>
+          <h2>CCR</h2>
+          <p class="acerca-sub">Iglesia Centro Cristiano de Restauracion</p>
+          <div class="acerca-line"></div>
+          <h3>✦ ACERCA DE LA APP ✦</h3>
+          <p>CCR nacio con un proposito sencillo y profundo: poner la Palabra de Dios en las manos de cada miembro de nuestra congregacion, de una manera bella, accesible y siempre disponible.</p>
+          <p>Con CCR puedes leer la Biblia en multiples versiones, disfrutar devocionales diarios, explorar videos y predicas de nuestros pastores, y mucho mas que seguimos construyendo con amor para ti.</p>
+          <div class="acerca-short-line"></div>
+          <h3>✦ NUESTRA IGLESIA ✦</h3>
+          <p>La iglesia Centro Cristiano de Restauracion es una congregacion evangelica ubicada en el barrio Luis Carlos Galan, en la esquina de la Calle Ancha, en la hermosa ciudad de Cartagena de Indias.</p>
+          <p>Somos parte del Concilio de las Asambleas de Dios, bajo la vision y liderazgo de nuestros pastores principales.</p>
+          <p class="acerca-pastores">Ps. Alex Oyuela &amp; Ps. Rosiris Rodriguez</p>
+          <p><em>La iglesia Centro Cristiano de Restauracion es hoy una congregacion viva, en crecimiento, con un liderazgo que cada dia se multiplica para servir mejor al Senor y a su pueblo.</em></p>
+          <div class="acerca-line"></div>
+          <blockquote>"Lampara es a mis pies tu palabra, y lumbrera a mi camino."</blockquote>
+          <p class="acerca-ref">Salmos 119:105</p>
+          <div class="acerca-short-line"></div>
+          <p class="acerca-version">Version 1.0</p>
         </div>
       </div>
     </div>
