@@ -1,5 +1,6 @@
 /* ── Variables ── */
 :root {
+  color-scheme: light;
   --bg: #000000;
   --bg2: #0e2231;
   --bg3: #152230;
@@ -38,7 +39,7 @@ body.light {
   --radio-subtitle: #4a4a6a;
 }
 
-* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; forced-color-adjust: none; }
 html, body { height: 100%; width: 100%; overflow: hidden; background: var(--bg); color: var(--text); font-family: 'Lora', Georgia, serif; }
 
 /* ── Screens ── */
@@ -171,8 +172,7 @@ body:not(.root-screen) #toolbarLogo { display: none; }
   display: flex; flex-direction: column; gap: 8px;
   overflow: visible;
 }
-body.light .pergamino-texto { color: #0e2231; }
-body.dark .pergamino-texto { color: #ffffff; }
+.pergamino-texto, body.light .pergamino-texto, body.dark .pergamino-texto { color: #e8f4fc; }
 .dev-fecha { font-size: 12px; letter-spacing: 5px; color: currentColor; opacity: .7; font-weight: 600; text-transform: uppercase; text-align: center; margin-bottom: 9px; }
 .dev-titulo { font-size: 27px; font-weight: 700; color: currentColor; line-height: 1.25; text-align: center; margin-bottom: 3px; }
 .dev-versiculo-texto { font-style: italic; font-size: 17px; color: currentColor; line-height: 1.35; text-align: center; margin-bottom: 4px; }
@@ -214,14 +214,25 @@ body.dark .pergamino-texto { color: #ffffff; }
 /* Player */
 .player-wrap { padding: 0 0 80px; }
 #ytPlayer { width: 100%; aspect-ratio: 16/9; background: #000; }
-.player-info { padding: 11px 20px; border-top: 3px solid var(--primary); background: var(--surface); }
-.player-info h3 { font-size: 15px; color: var(--primary); line-height: 1.35; margin-bottom: 10px; padding-left: 12px; border-left: 4px solid var(--primary); }
-.player-meta { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 14px; border-top: 1px solid var(--border); padding-top: 8px; }
+.player-info { padding: 16px 20px 18px; border-top: 3px solid var(--primary); background: var(--surface); }
+.player-info h3 { font-size: 18px; color: var(--primary); line-height: 1.35; margin-bottom: 16px; }
+.player-meta { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 8px 14px; }
+.player-meta.compact { border-top: none; padding-top: 0; }
 .player-meta-item { min-width: 0; }
 .player-meta-item.full { grid-column: 1 / -1; }
 .player-meta-label { display: block; color: var(--primary); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 2px; }
 .player-meta-value { display: block; color: var(--text); font-size: 14px; line-height: 1.35; }
 .player-meta-value.cita { color: var(--red-logo); font-weight: 700; }
+.player-cita { justify-self: start; border: 0; background: transparent; color: var(--red-logo); font-size: 20px; font-family: 'Lora', Georgia, serif; font-style: italic; cursor: pointer; padding: 0; }
+.player-cita span { color: var(--red-logo); font-style: normal; padding-left: 6px; }
+.player-predicador { justify-self: end; color: var(--text); font-size: 16px; }
+.player-fecha { grid-column: 1 / -1; color: var(--text2); font-size: 13px; }
+.player-bible-panel { margin-top: 14px; border-top: 3px solid var(--primary); background: var(--bg); }
+.player-bible-head { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; color: var(--primary); font-size: 15px; }
+.player-bible-head span { color: var(--text2); font-size: 12px; }
+.player-bible-verses { max-height: 280px; overflow-y: auto; padding-bottom: 8px; }
+.player-bible-verses p { color: var(--text); font-size: 15px; line-height: 1.55; padding: 7px 0; border-bottom: 1px solid var(--border); }
+.player-bible-verses b { color: var(--red-logo); margin-right: 6px; }
 
 /* ══════════════════════════════════════════════════════
    JUEGO

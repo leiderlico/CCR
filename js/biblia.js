@@ -4,6 +4,7 @@ let currentVersion = 'RVA1960';
 let currentLibro = null;
 let currentCapitulo = null;
 window.currentLibroNombre = '';
+window.bibleData = null;
 
 const VERSIONES = [
   { id: 'RVA1960', nombre: 'Reina Valera 1960', archivo: 'biblia_rv1960.json', local: true },
@@ -31,14 +32,24 @@ async function loadVersion(versionId) {
   const version = VERSIONES.find(v => v.id === versionId) || VERSIONES[0];
   currentVersion = version.id;
   bibleData = null;
-  document.getElementById('bibleLoading').classList.remove('hidden');
-  document.getElementById('listaAntiguo').innerHTML = '';
-  document.getElementById('listaNuevo').innerHTML = '';
+  window.bibleData = null;
+  const inVersiculos = document.getElementById('screenVersiculos')?.classList.contains('active');
+  if (!inVersiculos) {
+    document.getElementById('bibleLoading').classList.remove('hidden');
+    document.getElementById('listaAntiguo').innerHTML = '';
+    document.getElementById('listaNuevo').innerHTML = '';
+  }
 
   try {
     const data = await cargarBiblia(version);
     bibleData = normalizarBiblia(data);
-    renderLibros();
+    window.bibleData = bibleData;
+    if (inVersiculos && currentLibro && currentCapitulo) {
+      renderVersiculos(currentCapitulo);
+      document.getElementById('btnVersion').textContent = currentVersion;
+    } else {
+      renderLibros();
+    }
   } catch(e) {
     document.getElementById('bibleLoading').classList.add('hidden');
     document.getElementById('listaAntiguo').innerHTML =
@@ -132,6 +143,13 @@ function seleccionarLibro(libro) {
 
 function seleccionarCapitulo(num) {
   currentCapitulo = num;
+  renderVersiculos(num);
+  pushScreen('screenVersiculos', currentLibro.nombre + ' ' + num, true);
+  document.getElementById('btnVersion').classList.remove('hidden');
+  document.getElementById('btnVersion').textContent = currentVersion;
+}
+
+function renderVersiculos(num) {
   const versiculos = (bibleData.versiculos || []).filter(
     v => Number(v.libro_id) === Number(currentLibro.id) && Number(v.capitulo) === Number(num)
   );
@@ -144,10 +162,6 @@ function seleccionarCapitulo(num) {
     el.innerHTML = `<span class="ver-num">${v.versiculo}</span><span class="ver-texto">${escapeHtml(v.texto)}</span>`;
     lista.appendChild(el);
   });
-
-  pushScreen('screenVersiculos', currentLibro.nombre + ' ' + num, true);
-  document.getElementById('btnVersion').classList.remove('hidden');
-  document.getElementById('btnVersion').textContent = currentVersion;
 }
 
 function switchTab(btn, tab) {
@@ -171,11 +185,7 @@ function mostrarSelectorVersion() {
     `;
     el.onclick = () => {
       cerrarModalVersion();
-      loadVersion(ver.id).then(() => {
-        if (currentLibro && currentCapitulo && document.getElementById('screenVersiculos').classList.contains('active')) {
-          seleccionarCapitulo(currentCapitulo);
-        }
-      });
+      loadVersion(ver.id);
     };
     list.appendChild(el);
   });

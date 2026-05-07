@@ -106,22 +106,21 @@ function abrirPlayer(video, titulo) {
     return;
   }
 
-  renderPlayerInfo(typeof video === 'string' ? { titulo, urlYoutube } : video);
   pushScreen('screenPlayer', titulo);
+  renderPlayerInfo(typeof video === 'string' ? { titulo, urlYoutube } : video);
 
   const playerEl = document.getElementById('ytPlayer');
-  playerEl.innerHTML = '';
-
-  if (ytApiReady && window.YT?.Player) {
-    if (ytPlayer) ytPlayer.destroy();
-    ytPlayer = new YT.Player('ytPlayer', {
-      videoId,
-      playerVars: { autoplay: 1, playsinline: 1, rel: 0, modestbranding: 1 },
-      events: { onReady: e => e.target.playVideo() }
-    });
-  } else {
-    playerEl.innerHTML = `<iframe width="100%" height="100%" src="https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&playsinline=1" frameborder="0" allowfullscreen allow="autoplay; encrypted-media; fullscreen; picture-in-picture"></iframe>`;
-  }
+  if (ytPlayer && ytPlayer.destroy) ytPlayer.destroy();
+  ytPlayer = null;
+  playerEl.replaceChildren();
+  const iframe = document.createElement('iframe');
+  iframe.width = '100%';
+  iframe.height = '100%';
+  iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&playsinline=1`;
+  iframe.allow = 'autoplay; encrypted-media; fullscreen; picture-in-picture';
+  iframe.allowFullscreen = true;
+  iframe.frameBorder = '0';
+  playerEl.appendChild(iframe);
 }
 
 function stopYTPlayer() {
@@ -220,12 +219,36 @@ function renderPlayerInfo(video) {
   const titulo = video.titulo || 'Sin titulo';
   info.innerHTML = `
     <h3>${escapeHtml(titulo)}</h3>
-    <div class="player-meta">
-      ${video.cita ? `<div class="player-meta-item full"><span class="player-meta-label">Cita</span><span class="player-meta-value cita">${escapeHtml(video.cita)}</span></div>` : ''}
-      ${video.predicador ? `<div class="player-meta-item"><span class="player-meta-label">Predicador</span><span class="player-meta-value">${escapeHtml(video.predicador)}</span></div>` : ''}
-      ${video.fecha ? `<div class="player-meta-item"><span class="player-meta-label">Fecha</span><span class="player-meta-value">${escapeHtml(video.fecha)}</span></div>` : ''}
+    <div class="player-meta compact">
+      ${video.cita ? `<button class="player-cita" onclick="togglePlayerBible(${Number(video.libroId) || 0}, ${Number(video.capitulo) || 0})">${escapeHtml(video.cita)} <span>⌃</span></button>` : ''}
+      ${video.predicador ? `<span class="player-predicador">${escapeHtml(video.predicador)}</span>` : ''}
+      ${video.fecha ? `<span class="player-fecha">${escapeHtml(video.fecha)}</span>` : ''}
+    </div>
+    <div id="playerBiblePanel" class="player-bible-panel hidden"></div>
+  `;
+}
+
+function togglePlayerBible(libroId, capitulo) {
+  const panel = document.getElementById('playerBiblePanel');
+  if (!panel || !libroId || !capitulo) return;
+  const hidden = panel.classList.contains('hidden');
+  if (!hidden) {
+    panel.classList.add('hidden');
+    return;
+  }
+  const libroNombre = LIBROS_BIBLIA[libroId] || `Libro ${libroId}`;
+  const versiculos = (window.bibleData || bibleData || { versiculos: [] }).versiculos
+    .filter(v => Number(v.libro_id) === Number(libroId) && Number(v.capitulo) === Number(capitulo));
+  panel.innerHTML = `
+    <div class="player-bible-head">
+      <strong>${escapeHtml(libroNombre)} ${capitulo}</strong>
+      <span>${escapeHtml(currentVersion || '')}</span>
+    </div>
+    <div class="player-bible-verses">
+      ${versiculos.map(v => `<p><b>${v.versiculo}</b> ${escapeHtml(v.texto)}</p>`).join('') || '<p>No se encontraron versiculos para esta cita.</p>'}
     </div>
   `;
+  panel.classList.remove('hidden');
 }
 
 const LIBROS_BIBLIA = {

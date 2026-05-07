@@ -9,9 +9,7 @@ const DEV_BASE_URL = (() => {
 function updatePergaminoImage() {
   const img = document.getElementById('imgPergamino');
   if (!img) return;
-  img.src = state.darkMode
-    ? 'assets/img/pergaminodevocionalnight.jpg'
-    : 'assets/img/pergaminodevocional.jpg';
+  img.src = 'assets/img/pergaminodevocionalnight.jpg';
 }
 
 async function loadDevocional() {
