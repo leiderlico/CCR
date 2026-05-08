@@ -527,11 +527,25 @@ body.dark .ranking-full-row { color: var(--text); }
 .acerca-line { height: 2px; background: rgba(255,255,255,.25); margin: 0 0 24px; }
 .acerca-short-line { width: 60px; height: 2px; background: rgba(255,255,255,.38); margin: 10px auto 24px; }
 .acerca-content h3 { text-align: center; font-size: 16px; color: #99ccff; letter-spacing: 2px; margin-bottom: 19px; }
-.acerca-content p { font-size: 17px; line-height: 1.6; margin-bottom: 14px; }
+.acerca-content p {
+  font-size: 17px;
+  line-height: 1.62;
+  margin-bottom: 14px;
+  text-align: justify;
+  text-align-last: left;
+  hyphens: auto;
+}
 .acerca-pastores { text-align: center; font-size: 18px !important; font-weight: 800; font-style: italic; color: #cce8ff; }
 .acerca-content blockquote { text-align: center; color: #cce8ff; font-size: 18px; font-style: italic; line-height: 1.5; margin: 0 0 6px; }
-.acerca-ref { text-align: center; color: #99ccff; font-size: 14px !important; font-weight: 800; margin-bottom: 24px !important; }
-.acerca-version { text-align: center; color: rgba(255,255,255,.5); font-size: 13px !important; letter-spacing: 1px; }
+.acerca-sub,
+.acerca-pastores,
+.acerca-ref,
+.acerca-version {
+  text-align: center !important;
+  text-align-last: center !important;
+}
+.acerca-ref { color: #99ccff; font-size: 14px !important; font-weight: 800; margin-bottom: 24px !important; }
+.acerca-version { color: rgba(255,255,255,.5); font-size: 13px !important; letter-spacing: 1px; }
 
 /* ══════════════════════════════════════════════════════
    MODAL VERSION
