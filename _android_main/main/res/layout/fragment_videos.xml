@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/surface_color">
+
+    <!-- Barra de búsqueda -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/searchLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="12dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="4dp"
+        app:startIconDrawable="@android:drawable/ic_menu_search"
+        app:endIconMode="clear_text"
+        style="@style/AppTextInputStyle">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etBusqueda"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Buscar prédicas..."
+            android:inputType="text"
+            android:imeOptions="actionSearch"
+            android:textSize="14sp"
+            android:textColor="@color/search_input_text" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Chips de filtros scrolleable horizontal -->
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none"
+        android:paddingHorizontal="12dp"
+        android:paddingBottom="6dp">
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/chipGroupFiltros"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:singleSelection="true"
+            app:selectionRequired="false">
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipRecientes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Más recientes"
+                android:checkable="true" />
+
+        </com.google.android.material.chip.ChipGroup>
+    </HorizontalScrollView>
+
+    <!-- Mensaje de estado -->
+    <TextView
+        android:id="@+id/tvSyncStatus"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="4dp"
+        android:textSize="12sp"
+        android:textColor="@color/search_status_text"
+        android:visibility="gone" />
+
+    <!-- Loading -->
+    <ProgressBar
+        android:id="@+id/progressVideos"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="32dp"
+        android:visibility="gone" />
+
+    <!-- Estado vacío -->
+    <LinearLayout
+        android:id="@+id/emptyState"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:paddingTop="48dp"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sin resultados"
+            android:textSize="16sp"
+            android:textColor="@color/empty_state_title"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:text="Intenta con otros filtros"
+            android:textSize="13sp"
+            android:textColor="@color/empty_state_subtitle" />
+
+    </LinearLayout>
+
+    <!-- Lista de grupos + videos -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvVideos"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:paddingBottom="8dp"
+        android:clipToPadding="false" />
+
+</LinearLayout>

@@ -4,10 +4,23 @@ let currentVersion = 'RVA1960';
 let currentLibro = null;
 let currentCapitulo = null;
 let selectedVerses = new Set();
+let bibleSearchTimer = null;
+let bibleSuggestions = [];
+let pendingVerseHighlight = null;
 window.currentLibroNombre = '';
 window.currentLibroAbbrev = '';
 window.currentCapitulo = null;
 window.bibleData = null;
+
+const HIGHLIGHT_STORAGE_KEY = 'ccr_verse_highlights_v1';
+const HIGHLIGHT_COLORS = [
+  '#f48fb166',
+  '#ffcc8066',
+  '#a5d6a766',
+  '#bdbdbd66',
+  '#cf94da66',
+  '#ef9a9a66'
+];
 
 const VERSIONES = [
   { id: 'RVA1960', nombre: 'Reina Valera 1960', archivo: 'biblia_rv1960.json', local: true },
@@ -169,9 +182,15 @@ function renderVersiculos(num) {
   tools.id = 'verseSelectionBar';
   tools.className = 'verse-selection-bar hidden';
   tools.innerHTML = `
-    <button onclick="listenSelectedVerses()">Escuchar</button>
-    <button onclick="shareSelectedVerses()">Compartir</button>
-    <button onclick="clearVerseSelection()">Cancelar</button>
+    <div class="verse-actions-row">
+      <button onclick="listenSelectedVerses()">Escuchar</button>
+      <button onclick="shareSelectedVerses()">Compartir</button>
+      <button onclick="removeSelectedHighlights()">Borrar</button>
+      <button onclick="clearVerseSelection()">Cancelar</button>
+    </div>
+    <div class="verse-colors-row">
+      ${HIGHLIGHT_COLORS.map(color => `<button class="verse-color-chip" style="--chip:${color}" onclick="applyHighlightColor('${color}')" title="Resaltar"></button>`).join('')}
+    </div>
   `;
   lista.appendChild(tools);
 
@@ -183,11 +202,22 @@ function renderVersiculos(num) {
     const el = document.createElement('div');
     el.className = 'versiculo-item';
     el.dataset.verse = v.versiculo;
+    const savedColor = getVerseHighlight(v.versiculo);
+    if (savedColor) {
+      el.classList.add('highlighted');
+      el.style.setProperty('--highlight-color', savedColor);
+    }
+    if (Number(v.versiculo) === Number(pendingVerseHighlight)) {
+      el.classList.add('search-highlight');
+      setTimeout(() => el.scrollIntoView({ behavior: 'smooth', block: 'center' }), 180);
+      setTimeout(() => el.classList.remove('search-highlight'), 2600);
+    }
     el.innerHTML = `<span class="ver-num">${v.versiculo}</span><span class="ver-texto">${escapeHtml(v.texto)}</span>`;
     bindVerseSelection(el, v.versiculo);
     lista.appendChild(el);
   });
 
+  pendingVerseHighlight = null;
   renderChapterVideosHint(videosSlot, currentLibro.id, num, currentLibro.nombre);
 }
 
@@ -282,6 +312,53 @@ function clearVerseSelection() {
   updateVerseSelectionBar();
 }
 
+function getHighlightMap() {
+  try { return JSON.parse(localStorage.getItem(HIGHLIGHT_STORAGE_KEY) || '{}'); }
+  catch(e) { return {}; }
+}
+
+function saveHighlightMap(map) {
+  try { localStorage.setItem(HIGHLIGHT_STORAGE_KEY, JSON.stringify(map)); } catch(e) {}
+}
+
+function getHighlightKey(verseNumber) {
+  return `${Number(currentLibro?.id || 0)}_${Number(currentCapitulo || 0)}_${Number(verseNumber || 0)}`;
+}
+
+function getVerseHighlight(verseNumber) {
+  return getHighlightMap()[getHighlightKey(verseNumber)] || '';
+}
+
+function applyHighlightColor(color) {
+  if (!selectedVerses.size || !color) return;
+  const map = getHighlightMap();
+  selectedVerses.forEach(verse => {
+    map[getHighlightKey(verse)] = color;
+    const el = document.querySelector(`.versiculo-item[data-verse="${verse}"]`);
+    if (el) {
+      el.classList.add('highlighted');
+      el.style.setProperty('--highlight-color', color);
+    }
+  });
+  saveHighlightMap(map);
+  clearVerseSelection();
+}
+
+function removeSelectedHighlights() {
+  if (!selectedVerses.size) return;
+  const map = getHighlightMap();
+  selectedVerses.forEach(verse => {
+    delete map[getHighlightKey(verse)];
+    const el = document.querySelector(`.versiculo-item[data-verse="${verse}"]`);
+    if (el) {
+      el.classList.remove('highlighted');
+      el.style.removeProperty('--highlight-color');
+    }
+  });
+  saveHighlightMap(map);
+  clearVerseSelection();
+}
+
 async function renderChapterVideosHint(slot, libroId, capitulo, libroNombre) {
   if (!slot || typeof getVideosPorCapitulo !== 'function') return;
   slot.innerHTML = '';
@@ -302,6 +379,158 @@ async function renderChapterVideosHint(slot, libroId, capitulo, libroNombre) {
   } catch(e) {
     // Videos are optional; the Bible chapter should keep working offline.
   }
+}
+
+function handleBibleSearchKey(event) {
+  if (event.key !== 'Enter') return;
+  event.preventDefault();
+  const first = bibleSuggestions[0];
+  if (first) abrirSugerenciaBiblica(first.libroId, first.capitulo, first.versiculo);
+}
+
+function handleBibleSearchInput(value) {
+  clearTimeout(bibleSearchTimer);
+  bibleSearchTimer = setTimeout(() => runBibleSearch(value), 180);
+}
+
+function runBibleSearch(value) {
+  const query = (value || '').trim();
+  if (!query || !bibleData) {
+    renderBibleSuggestions([]);
+    return;
+  }
+
+  const results = [];
+  const ref = parseBibleReference(query);
+  if (ref) results.push(ref);
+
+  const normalized = normalizeBibleText(query);
+  if (normalized.length >= 3) {
+    const found = searchBibleContent(normalized, 10);
+    found.forEach(item => {
+      if (!results.some(r => r.libroId === item.libroId && r.capitulo === item.capitulo && r.versiculo === item.versiculo)) {
+        results.push(item);
+      }
+    });
+  }
+
+  renderBibleSuggestions(results.slice(0, 10));
+}
+
+function parseBibleReference(query) {
+  const normalized = normalizeBibleText(query).replace(/[.,;]/g, ' ');
+  const aliases = getBookAliases();
+  for (const item of aliases) {
+    if (normalized !== item.alias && !normalized.startsWith(item.alias + ' ')) continue;
+    const rest = normalized.slice(item.alias.length).trim();
+    const match = /^(\d+)(?:\s*[: ]\s*(\d+))?/.exec(rest);
+    if (!match) continue;
+    const capitulo = Number(match[1]);
+    const versiculo = Number(match[2] || 1);
+    if (capitulo < 1 || capitulo > Number(item.libro.capitulos || 0)) continue;
+    const verse = findVerse(item.libro.id, capitulo, versiculo);
+    if (!verse) continue;
+    return makeSuggestion(item.libro, capitulo, versiculo, verse.texto, 1);
+  }
+  return null;
+}
+
+function getBookAliases() {
+  if (!bibleData) return [];
+  const aliases = [];
+  (bibleData.libros || []).forEach(libro => {
+    [libro.nombre, libro.abreviacion, (libro.abreviacion || '').replace(/\./g, '')]
+      .filter(Boolean)
+      .forEach(alias => aliases.push({ alias: normalizeBibleText(alias), libro }));
+  });
+  return aliases
+    .filter((item, index, arr) => arr.findIndex(x => x.alias === item.alias && x.libro.id === item.libro.id) === index)
+    .sort((a, b) => b.alias.length - a.alias.length);
+}
+
+function searchBibleContent(normalizedQuery, limit) {
+  const results = [];
+  for (const verse of (bibleData.versiculos || [])) {
+    if (!normalizeBibleText(verse.texto).includes(normalizedQuery)) continue;
+    const libro = (bibleData.libros || []).find(l => Number(l.id) === Number(verse.libro_id));
+    if (!libro) continue;
+    results.push(makeSuggestion(libro, Number(verse.capitulo), Number(verse.versiculo), verse.texto, 3));
+    if (results.length >= limit) break;
+  }
+  return results;
+}
+
+function makeSuggestion(libro, capitulo, versiculo, texto, priority) {
+  return {
+    referencia: `${libro.nombre} ${capitulo}:${versiculo}`,
+    texto: texto || '',
+    libroId: Number(libro.id),
+    capitulo: Number(capitulo),
+    versiculo: Number(versiculo),
+    priority
+  };
+}
+
+function findVerse(libroId, capitulo, versiculo) {
+  return (bibleData.versiculos || []).find(v =>
+    Number(v.libro_id) === Number(libroId) &&
+    Number(v.capitulo) === Number(capitulo) &&
+    Number(v.versiculo) === Number(versiculo)
+  );
+}
+
+function renderBibleSuggestions(results) {
+  const panel = document.getElementById('suggestionPanel');
+  const container = document.getElementById('suggestionsContainer');
+  if (!panel || !container) return;
+  bibleSuggestions = results || [];
+  panel.classList.toggle('hidden', bibleSuggestions.length === 0);
+  container.innerHTML = bibleSuggestions.map(item => `
+    <button class="suggestion-card" onclick="abrirSugerenciaBiblica(${item.libroId}, ${item.capitulo}, ${item.versiculo})">
+      <span class="suggestion-ref">${escapeHtml(item.referencia)}</span>
+      <span class="suggestion-text">${escapeHtml(item.texto)}</span>
+    </button>
+  `).join('');
+}
+
+function clearBibleSearch() {
+  const input = document.getElementById('bibleSearchInput');
+  if (input) input.value = '';
+  clearBibleSuggestions();
+}
+
+function clearBibleSuggestions() {
+  bibleSuggestions = [];
+  renderBibleSuggestions([]);
+}
+
+function abrirSugerenciaBiblica(libroId, capitulo, versiculo) {
+  if (!bibleData) return;
+  const libro = (bibleData.libros || []).find(l => Number(l.id) === Number(libroId));
+  if (!libro) return;
+  clearBibleSuggestions();
+  const input = document.getElementById('bibleSearchInput');
+  if (input) input.value = '';
+  currentLibro = libro;
+  window.currentLibroNombre = libro.nombre;
+  window.currentLibroAbbrev = libro.abreviacion || libro.nombre;
+  pendingVerseHighlight = Number(versiculo);
+  currentCapitulo = Number(capitulo);
+  window.currentCapitulo = Number(capitulo);
+  renderVersiculos(Number(capitulo));
+  pushScreen('screenVersiculos', getLibroAbreviado(libro) + ' ' + capitulo, true);
+  document.getElementById('btnVersion').classList.remove('hidden');
+  document.getElementById('btnVersion').textContent = currentVersion;
+}
+
+function normalizeBibleText(text) {
+  return String(text || '')
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^\p{L}\p{N}\s]/gu, ' ')
+    .replace(/\s+/g, ' ')
+    .toLowerCase()
+    .trim();
 }
 
 function switchTab(btn, tab) {

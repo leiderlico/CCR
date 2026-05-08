@@ -1,0 +1,11 @@
+<!-- ══════════════════════════════════════════════════════════════
+     ARCHIVO 3: res/drawable/circle_radio_artwork.xml
+     Círculo de fondo para el artwork central de la radio
+══════════════════════════════════════════════════════════════ -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="oval">
+    <solid android:color="@color/primary"/>
+    <stroke
+        android:width="3dp"
+        android:color="@color/accent"/>
+</shape>

@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/radio_background"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- HERO: imagen + overlay -->
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="200dp">
+
+            <ImageView
+                android:id="@+id/imgEstacion"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:contentDescription="Banner de la estación" />
+
+            <!-- Degradado oscuro inferior -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="110dp"
+                android:layout_gravity="bottom"
+                android:background="@drawable/bg_hero_gradient" />
+
+            <!-- Nombre + frecuencia flotando sobre imagen -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:orientation="vertical"
+                android:paddingHorizontal="16dp"
+                android:paddingBottom="14dp">
+
+                <TextView
+                    android:id="@+id/tvBadgeEnVivo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="6dp"
+                    android:background="@drawable/bg_live_badge"
+                    android:paddingHorizontal="9dp"
+                    android:paddingVertical="3dp"
+                    android:text="  EN VIVO"
+                    android:textColor="#FFFFFF"
+                    android:textSize="11sp"
+                    android:fontFamily="sans-serif-medium"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/tvNombreEstacion"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="#FFFFFF"
+                    android:textSize="17sp"
+                    android:fontFamily="sans-serif-medium"
+                    android:maxLines="2"
+                    android:ellipsize="end"
+                    android:shadowColor="#66000000"
+                    android:shadowDx="0"
+                    android:shadowDy="1"
+                    android:shadowRadius="4" />
+
+                <TextView
+                    android:id="@+id/tvFrecuencia"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:textColor="#99FFFFFF"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
+        </FrameLayout>
+
+        <!-- PLAYER: play + estado + ecualizador -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="14dp">
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/btnPlayPause"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="Play / Pause"
+                app:backgroundTint="@color/primary"
+                app:tint="@android:color/white"
+                app:srcCompat="@drawable/ic_play_arrow"
+                app:fabSize="normal"
+                app:elevation="4dp" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:layout_marginStart="14dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="REPRODUCIENDO AHORA"
+                    android:textColor="@color/radio_subtitle"
+                    android:textSize="10sp"
+                    android:fontFamily="sans-serif-medium"
+                    android:letterSpacing="0.06"
+                    android:layout_marginBottom="3dp" />
+
+                <TextView
+                    android:id="@+id/tvEstado"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/radio_title"
+                    android:textSize="13sp"
+                    android:fontFamily="sans-serif-medium"
+                    android:maxLines="1"
+                    android:ellipsize="end" />
+
+            </LinearLayout>
+
+            <!-- Ecualizador animado (5 barras) -->
+            <LinearLayout
+                android:id="@+id/layoutEcualizador"
+                android:layout_width="wrap_content"
+                android:layout_height="18dp"
+                android:orientation="horizontal"
+                android:gravity="bottom"
+                android:layout_marginStart="12dp"
+                android:visibility="gone">
+
+                <View android:id="@+id/eqBar1"
+                    android:layout_width="3dp" android:layout_height="7dp"
+                    android:layout_marginHorizontal="1dp"
+                    android:background="@color/primary" />
+                <View android:id="@+id/eqBar2"
+                    android:layout_width="3dp" android:layout_height="14dp"
+                    android:layout_marginHorizontal="1dp"
+                    android:background="@color/primary" />
+                <View android:id="@+id/eqBar3"
+                    android:layout_width="3dp" android:layout_height="10dp"
+                    android:layout_marginHorizontal="1dp"
+                    android:background="@color/primary" />
+                <View android:id="@+id/eqBar4"
+                    android:layout_width="3dp" android:layout_height="18dp"
+                    android:layout_marginHorizontal="1dp"
+                    android:background="@color/primary" />
+                <View android:id="@+id/eqBar5"
+                    android:layout_width="3dp" android:layout_height="9dp"
+                    android:layout_marginHorizontal="1dp"
+                    android:background="@color/primary" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- Divisor sutil -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/radio_subtitle"
+            android:alpha="0.2" />
+
+        <!-- ANUNCIO — solo Melodía Celestial -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardAnuncio"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="12dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="4dp"
+            android:visibility="gone"
+            app:cardBackgroundColor="@color/radio_anuncio_background"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="0dp"
+            app:strokeColor="@color/primary"
+            app:strokeWidth="1dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="9dp"
+                android:gravity="center_vertical">
+
+                <View
+                    android:layout_width="7dp"
+                    android:layout_height="7dp"
+                    android:background="@drawable/bg_circle_primary_light"
+                    android:layout_marginEnd="9dp" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="La voz de Dios"
+                        android:textColor="@color/radio_title"
+                        android:textSize="13sp"
+                        android:fontFamily="sans-serif-medium" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Lun a Vie, 9 a 10 AM"
+                        android:textColor="@color/radio_subtitle"
+                        android:textSize="11sp"
+                        android:layout_marginTop="1dp" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Sección canales -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="14dp"
+            android:layout_marginBottom="4dp"
+            android:text="CANALES DISPONIBLES"
+            android:textColor="@color/radio_subtitle"
+            android:textSize="10sp"
+            android:fontFamily="sans-serif-medium"
+            android:letterSpacing="0.07" />
+
+        <LinearLayout
+            android:id="@+id/contenedorEstaciones"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="10dp"
+            android:paddingBottom="80dp" />
+
+    </LinearLayout>
+</ScrollView>

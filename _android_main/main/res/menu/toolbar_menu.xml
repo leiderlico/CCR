@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_radio"
+        android:title="Radio"
+        android:icon="@drawable/ic_radio"
+        app:showAsAction="always"
+        app:iconTint="@null"
+        android:visible="false" />
+
+    <item
+        android:id="@+id/action_modo_noche"
+        android:title="Modo noche"
+        android:icon="@drawable/dia"
+        app:showAsAction="always"
+        app:iconTint="@null" />
+
+    <item
+        android:id="@+id/action_menu"
+        android:title="Menú"
+        android:icon="@drawable/ic_menu_sandwich"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/action_menu_versiculos"
+        android:title="Opciones"
+        android:icon="@drawable/ic_menu_sandwich"
+        app:showAsAction="always"
+        android:visible="false" />
+
+    <item
+        android:id="@+id/action_escuchar"
+        android:title="Escuchar"
+        android:icon="@drawable/ic_escuchar"
+        app:showAsAction="always"
+        app:iconTint="@null"
+        android:visible="false" />
+
+    <item
+        android:id="@+id/action_compartir"
+        android:title="Compartir"
+        android:icon="@drawable/ic_compartir"
+        app:showAsAction="always"
+        app:iconTint="@null"
+        android:visible="false" />
+
+    <item
+        android:id="@+id/action_resaltar"
+        android:title="Resaltar"
+        android:icon="@drawable/ic_resaltar"
+        app:showAsAction="always"
+        android:visible="false" />
+
+</menu>

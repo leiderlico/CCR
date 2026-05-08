@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/librosFragment"
+        android:icon="@drawable/ic_biblia"
+        android:title="Biblia" />
+
+    <item
+        android:id="@+id/gruposSelectorFragment"
+        android:icon="@drawable/ic_video"
+        android:title="Videos" />
+
+    <item
+        android:id="@+id/devocionalFragment"
+        android:icon="@drawable/ic_devocionales"
+        android:title="Devocional" />
+
+    <item
+        android:id="@+id/juegoFragment"
+        android:icon="@drawable/ic_juegos"
+        android:title="Trivia" />
+
+</menu>

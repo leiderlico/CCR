@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.BIBLIACCR" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="android:statusBarColor">@color/toolbar_background</item>
+
+        <!-- Colores principales -->
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryDark">@color/primary_dark</item>
+        <item name="colorAccent">@color/accent</item>
+        <item name="android:colorBackground">@color/surface_color</item>
+        <item name="colorSurface">@color/surface_color</item>
+
+        <!-- Eliminar el morado de Material3 — todo se rige por primary -->
+        <item name="colorSecondary">@color/primary</item>
+        <item name="colorSecondaryVariant">@color/primary</item>
+        <item name="colorTertiary">@color/accent</item>
+
+        <!-- Indicador del BottomNav — la gota usa colorSecondaryContainer -->
+        <item name="colorSecondaryContainer">@color/bottom_nav_indicator</item>
+        <item name="colorOnSecondaryContainer">@color/white</item>
+
+        <!-- TextInputLayout: borde y cursor azul en vez de morado -->
+        <item name="colorControlActivated">@color/primary</item>
+        <item name="colorControlHighlight">@color/primary</item>
+
+        <!-- Hint del TextInputLayout — fuerza el color desde el tema -->
+        <item name="colorOnSurface">@color/search_input_text</item>
+        <item name="textInputStyle">@style/AppTextInputStyle</item>
+
+        <!-- Chips -->
+        <item name="chipStyle">@style/AppChipStyle</item>
+
+        <!-- Flecha de retroceso en Toolbar -->
+        <item name="drawerArrowStyle">@style/AppDrawerArrowToggle</item>
+        <item name="colorOnPrimary">@color/chip_text_selected</item>
+        <item name="toolbarStyle">@style/AppToolbarStyle</item>
+
+        <!-- Popup versiones (RV1960) — usa sus propios colores, NO toca colorOnPrimary -->
+        <item name="popupMenuStyle">@style/AppPopupMenuStyle</item>
+        <item name="android:popupMenuStyle">@style/AppPopupMenuStyle</item>
+    </style>
+
+    <!-- Estilo del Toolbar — fuerza el color de la flecha -->
+    <style name="AppToolbarStyle" parent="Widget.MaterialComponents.Toolbar.Primary">
+        <item name="navigationIconTint">@color/toolbar_title_text</item>
+        <item name="titleTextColor">@color/toolbar_title_text</item>
+        <item name="android:theme">@style/AppToolbarIconTheme</item>
+    </style>
+
+    <!-- Tamaño de íconos del toolbar — 20% más pequeños y más juntos -->
+    <style name="AppToolbarIconTheme">
+        <item name="actionButtonStyle">@style/AppToolbarActionButton</item>
+    </style>
+
+    <style name="AppToolbarActionButton" parent="Widget.AppCompat.ActionButton">
+        <item name="android:minWidth">36dp</item>
+        <item name="android:paddingStart">4dp</item>
+        <item name="android:paddingEnd">4dp</item>
+    </style>
+
+    <!-- TextInputLayout — todo controlado desde colors.xml -->
+    <style name="AppTextInputStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+        <item name="hintTextColor">@color/search_hint_floating</item>
+        <item name="android:textColorHint">@color/search_hint_text</item>
+        <item name="boxStrokeColor">@color/search_box_stroke</item>
+        <item name="boxBackgroundColor">@color/search_box_background</item>
+        <item name="startIconTint">@color/search_icon_tint</item>
+        <item name="endIconTint">@color/search_icon_tint</item>
+    </style>
+
+    <!-- Chips — todo controlado desde colors.xml -->
+    <style name="AppChipStyle" parent="Widget.MaterialComponents.Chip.Filter">
+        <item name="android:textColor">@color/chip_text</item>
+        <item name="chipStrokeColor">@color/chip_stroke</item>
+        <item name="chipStrokeWidth">1dp</item>
+        <item name="chipBackgroundColor">@color/chip_background_selector</item>
+        <item name="checkedIconTint">@color/chip_check_icon</item>
+    </style>
+
+    <!-- Flecha de retroceso (Up Button) en el Toolbar -->
+    <style name="AppDrawerArrowToggle" parent="Widget.AppCompat.DrawerArrowToggle">
+        <item name="color">@color/toolbar_title_text</item>
+    </style>
+
+    <!-- Popup versiones (RV1960) — menú desplegable de la Toolbar
+         Referencia toolbar_popup_text y toolbar_popup_background de colors.xml.
+         Completamente aislado: cambiar estos colores no afecta chips ni ningún otro elemento. -->
+    <style name="AppPopupMenuStyle" parent="Widget.MaterialComponents.PopupMenu">
+        <item name="android:popupBackground">@color/toolbar_popup_background</item>
+        <item name="android:textColor">@color/toolbar_popup_text</item>
+        <item name="android:textColorPrimary">@color/toolbar_popup_text</item>
+    </style>
+
+
+
+    <!-- Splash — fondo azul cyan fijo, independiente del modo noche -->
+    <style name="Theme.BIBLIACCR.Splash" parent="Theme.BIBLIACCR">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowBackground">#1AAEE8</item>
+        <item name="android:windowIsTranslucent">false</item>
+        <item name="android:windowContentOverlay">@null</item>
+    </style>
+
+
+    <!-- PETICIONES-->
+   <style name="PeticionTextInputStyle" parent="AppTextInputStyle">
+       <item name="boxStrokeColor">@color/peticion_input_stroke</item>
+       <item name="hintTextColor">@color/peticion_input_hint</item>
+       <item name="android:textColorHint">@color/peticion_input_hint</item>
+       <item name="boxBackgroundColor">@color/peticion_input_fondo</item>
+   </style>
+
+</resources>

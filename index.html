@@ -58,6 +58,20 @@
 
     <!-- BIBLIA: LIBROS -->
     <div id="screenLibros" class="page active">
+      <div class="bible-search-wrap">
+        <div class="bible-search-box">
+          <span>⌕</span>
+          <input id="bibleSearchInput" type="search" placeholder="Buscar por texto o referencia..." oninput="handleBibleSearchInput(this.value)" onkeydown="handleBibleSearchKey(event)"/>
+          <button onclick="clearBibleSearch()" title="Limpiar">×</button>
+        </div>
+        <div id="suggestionPanel" class="suggestion-panel hidden">
+          <div class="suggestion-head">
+            <strong>Sugerencias</strong>
+            <button onclick="clearBibleSuggestions()">Limpiar</button>
+          </div>
+          <div id="suggestionsContainer" class="suggestions-container"></div>
+        </div>
+      </div>
       <div class="tabs-biblia">
         <button class="tab-btn active" data-tab="antiguo" onclick="switchTab(this,'antiguo')">Antiguo Testamento</button>
         <button class="tab-btn" data-tab="nuevo" onclick="switchTab(this,'nuevo')">Nuevo Testamento</button>
@@ -246,6 +260,7 @@
         <div id="petFormulario">
           <textarea id="etPeticion" class="pet-textarea" placeholder="Escribe tu petición de oración aquí..." rows="5"></textarea>
           <button class="pet-btn" onclick="enviarPeticion()">Enviar Petición</button>
+          <button class="pet-btn pet-btn-outline" onclick="mostrarPinPeticiones()">Ver peticiones</button>
         </div>
         <div id="petConfirmacion" class="pet-confirmacion hidden">
           <div class="pet-ok-icon">🙏</div>
@@ -255,6 +270,14 @@
           <button class="pet-btn pet-btn-outline" onclick="goBack()">Volver</button>
         </div>
       </div>
+    </div>
+
+    <!-- VER PETICIONES -->
+    <div id="screenVerPeticiones" class="page hidden">
+      <div id="peticionesLoading" class="loading-center hidden">
+        <div class="spinner"></div><p>Cargando peticiones...</p>
+      </div>
+      <div id="peticionesList" class="peticiones-list"></div>
     </div>
 
     <!-- ACERCA -->

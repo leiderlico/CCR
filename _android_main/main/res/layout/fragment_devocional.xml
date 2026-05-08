@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- Fondo pergamino -->
+    <ImageView
+        android:id="@+id/imgPergamino"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/pergaminodevocional"
+        android:scaleType="fitXY"
+        android:contentDescription="Fondo pergamino" />
+
+    <!-- Contenido scrolleable encima -->
+    <ScrollView
+        android:id="@+id/scrollDevocional"
+        android:clipToPadding="false"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingTop="18dp"
+            android:paddingBottom="80dp"
+            android:paddingLeft="28dp"
+            android:paddingRight="28dp">
+
+            <!-- Fecha: pequeña, espaciada, estilo editorial -->
+            <TextView
+                android:id="@+id/tvFecha"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textSize="12sp"
+                android:letterSpacing="0.35"
+                android:alpha="0.7"
+                android:textColor="@color/devocional_texto"
+                android:fontFamily="@font/lora"
+                android:layout_marginBottom="9dp" />
+
+            <!-- Título con Lora -->
+            <TextView
+                android:id="@+id/tvTitulo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textSize="27sp"
+                android:lineSpacingMultiplier="1.25"
+                android:textColor="@color/devocional_texto"
+                android:fontFamily="@font/lora"
+                android:layout_marginBottom="3dp" />
+
+            <!-- Ornamento decorativo: línea · diamante · línea -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginBottom="7dp">
+
+                <View
+                    android:layout_width="72dp"
+                    android:layout_height="1dp"
+                    android:background="@color/devocional_texto"
+                    android:alpha="0.3" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="✦"
+                    android:textSize="14sp"
+                    android:textColor="@color/devocional_texto"
+                    android:alpha="0.45"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginRight="12dp" />
+
+                <View
+                    android:layout_width="72dp"
+                    android:layout_height="1dp"
+                    android:background="@color/devocional_texto"
+                    android:alpha="0.3" />
+
+            </LinearLayout>
+
+            <!-- Versículo en Lora Italic -->
+            <TextView
+                android:id="@+id/tvVersiculoTexto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textSize="17sp"
+                android:textColor="@color/devocional_texto"
+                android:lineSpacingMultiplier="1.2"
+                android:fontFamily="@font/lora_italic"
+                android:layout_marginBottom="4dp" />
+
+            <!-- Referencia -->
+            <TextView
+                android:id="@+id/tvVersiculoReferencia"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="end"
+                android:textSize="13sp"
+                android:letterSpacing="0.15"
+                android:alpha="0.65"
+                android:textColor="@color/devocional_texto"
+                android:fontFamily="@font/lora"
+                android:layout_marginBottom="12dp" />
+
+            <!-- Separador antes del cuerpo -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/devocional_texto"
+                android:alpha="0.2"
+                android:layout_marginBottom="11dp" />
+
+            <!-- Cuerpo con Lora -->
+            <TextView
+                android:id="@+id/tvCuerpo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:alpha="0.88"
+                android:textColor="@color/devocional_texto"
+                android:lineSpacingMultiplier="1.5"
+                android:fontFamily="@font/lora"
+                android:textAlignment="textStart" />
+
+        </LinearLayout>
+    </ScrollView>
+
+</FrameLayout>

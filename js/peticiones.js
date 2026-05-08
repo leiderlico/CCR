@@ -30,6 +30,64 @@ function nuevaPeticion() {
   document.getElementById('petConfirmacion').classList.add('hidden');
 }
 
+function mostrarPinPeticiones() {
+  const pin = prompt('Ingresa el PIN para ver las peticiones');
+  if (pin === null) return;
+  if (pin.trim() !== '00000000') {
+    alert('PIN incorrecto');
+    return;
+  }
+  abrirPeticionesRecibidas();
+}
+
+async function abrirPeticionesRecibidas() {
+  pushScreen('screenVerPeticiones', 'Peticiones recibidas', false);
+  const loading = document.getElementById('peticionesLoading');
+  const list = document.getElementById('peticionesList');
+  loading?.classList.remove('hidden');
+  if (list) list.innerHTML = '';
+
+  try {
+    const peticiones = await obtenerPeticiones();
+    renderPeticionesRecibidas(peticiones);
+  } catch(e) {
+    if (list) list.innerHTML = '<div class="pet-empty">No se pudieron cargar las peticiones.</div>';
+  } finally {
+    loading?.classList.add('hidden');
+  }
+}
+
+async function obtenerPeticiones() {
+  const body = JSON.stringify({ action: 'obtener_peticiones' });
+  const res = await fetch(PET_SCRIPT, {
+    method: 'POST',
+    body,
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' }
+  });
+  if (!res.ok) throw new Error('HTTP ' + res.status);
+  const data = await res.json();
+  const arr = data.peticiones || data.data || [];
+  return arr.map(item => ({
+    texto: item.texto || item.peticion || '',
+    fecha: item.fecha || item.createdAt || ''
+  })).filter(item => item.texto);
+}
+
+function renderPeticionesRecibidas(peticiones) {
+  const list = document.getElementById('peticionesList');
+  if (!list) return;
+  if (!peticiones.length) {
+    list.innerHTML = '<div class="pet-empty">No hay peticiones aún</div>';
+    return;
+  }
+  list.innerHTML = peticiones.map(item => `
+    <article class="pet-bubble">
+      <p>${escapeHtml(item.texto)}</p>
+      ${item.fecha ? `<span>${escapeHtml(item.fecha)}</span>` : ''}
+    </article>
+  `).join('');
+}
+
 /* VIDEOS */
 const SHEET_CSV = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTdak_SUYm9hTc1h4GWLDzgi-VVmcbPRV2mKr5xMAr8hNlb1jsvUpAiBIepMqiDAYX04NOmoGK18Vft/pub?gid=0&single=true&output=csv';
 

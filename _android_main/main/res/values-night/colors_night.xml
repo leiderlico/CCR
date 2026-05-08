@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- ══════════════════════════════════════════════════════════════════════
+         COLORES BASE — se mantienen igual en dark mode
+    ══════════════════════════════════════════════════════════════════════ -->
+    <color name="primary">#1AAEE8</color>
+    <color name="primary_dark">#1288B8</color>
+    <color name="primary_light">#6ACDE8</color>
+    <color name="accent">#F5D800</color>
+    <color name="red_logo">#E05555</color>          <!-- Rojo más claro — legible sobre oscuro -->
+    <color name="white">#FFFFFF</color>
+    <color name="black">#FF000000</color>
+
+    <!-- ══════════════════════════════════════════════════════════════════════
+         1. PANTALLA GENERAL
+    ══════════════════════════════════════════════════════════════════════ -->
+
+    <!-- 1.1 Toolbar — usa el color del pergamino anterior para contrastar -->
+    <color name="toolbar_background">#0E2231</color>            <!-- Azul casi negro — contrasta con el pergamino -->
+    <color name="toolbar_title_text">@color/accent</color>
+
+    <!-- 1.2 Menú hamburger — se mantiene igual -->
+    <color name="toolbar_menu_icon">@color/accent</color>
+    <color name="toolbar_menu_ripple">#33F5D800</color>
+
+    <!-- 1.2b Popup versiones -->
+    <color name="toolbar_popup_background">#1E3A4A</color>      <!-- Azul muy oscuro -->
+    <color name="toolbar_popup_text">@color/white</color>
+
+    <!-- 1.3 BottomNav — mismo color que toolbar para coherencia -->
+    <color name="bottom_nav_background">#0E2231</color>
+    <color name="bottom_nav_indicator">@color/accent</color>
+    <color name="bottom_nav_item_selected">#FFFFFF</color>
+    <color name="bottom_nav_item_unselected">#FFFFFF</color>
+
+    <!-- 1.4 FAB Micrófono -->
+    <color name="mic_active_color">@color/red_logo</color>
+    <color name="mic_inactive_color">#AAAAAA</color>
+    <color name="mic_icon_tint">#FFFFFF</color>
+
+    <!--
+        ══════════════════════════════════════════════════════════════════════
+        AGREGAR ESTOS COLORES al bloque "1.5 Radio" en res/values-night/colors.xml
+        ══════════════════════════════════════════════════════════════════════
+        El bloque 1.5 Radio ya existe. Reemplázalo completo por esto:
+    -->
+
+    <!-- 1.5 Radio — noche -->
+    <color name="radio_background">#1C1C1E</color>             <!-- Fondo oscuro tipo iOS dark -->
+    <color name="radio_title">#FFFFFF</color>                  <!-- Título blanco -->
+    <color name="radio_subtitle">#98989D</color>               <!-- Subtítulo gris claro -->
+    <color name="radio_fab_background">@color/primary</color>  <!-- Botón play azul cyan -->
+    <color name="radio_live_text">#FF453A</color>              <!-- Texto "EN VIVO" rojo brillante -->
+    <color name="radio_card_inactive">#2C2C2E</color> <!-- Tarjeta inactiva — gris oscuro -->
+    <color name="radio_anuncio_background">#0D2A3A</color> <!-- Fondo anuncio — azul muy oscuro -->
+
+
+    <!-- 1.6 Panel sugerencias -->
+    <color name="suggestion_panel_background">#EE000000</color>
+    <color name="suggestion_panel_title_text">@color/accent</color>
+    <color name="suggestion_card_reference_text">@color/red_logo</color>
+    <color name="suggestion_card_verse_text">#BBBBBB</color>
+
+    <!-- 1.6 Loading overlay -->
+    <color name="loading_overlay_background">#99000000</color>
+    <color name="loading_text">#FFFFFF</color>
+
+    <!-- 1.7 BottomSheet -->
+    <color name="bottom_sheet_background">@color/surface_color</color>
+    <color name="bottom_sheet_handle">@color/divider_color</color>
+    <color name="bottom_sheet_accent_bar">@color/primary</color>
+
+    <!-- ══════════════════════════════════════════════════════════════════════
+         2. LIBROS
+    ══════════════════════════════════════════════════════════════════════ -->
+    <color name="testamento_header_background">#06334B</color>
+    <color name="testamento_header_text">#C0FFFFFF</color>
+
+    <color name="libro_nombre_text">#CCE0F0</color>             <!-- Blanco azulado suave -->
+    <color name="libro_capitulos_text">#888888</color>
+    <color name="libro_abrev_text">@color/primary</color>
+    <color name="divider_color">#1A4A6A</color>
+    <color name="lineadivisorachica">#000000</color>
+
+    <!-- ══════════════════════════════════════════════════════════════════════
+         3. CAPÍTULOS
+    ══════════════════════════════════════════════════════════════════════ -->
+    <color name="capitulo_numero_text">@color/primary</color>
+
+    <!-- ══════════════════════════════════════════════════════════════════════
+         4. VERSÍCULOS
+    ══════════════════════════════════════════════════════════════════════ -->
+    <color name="versiculo_numero_text">@color/red_logo</color>
+    <color name="versiculo_texto">#E8F4FC</color>               <!-- Blanco con toque azul -->
+    <color name="highlight_color">#401AAEE8</color>
+
+    <!-- Modo oscuro de lectura — se mantiene igual -->
+    <color name="lectura_dark_fondo">#000000</color>
+    <color name="lectura_dark_texto">#FEF9F0</color>
+    <color name="lectura_dark_numero">#F5D800</color>
+    <color name="lectura_dark_highlight">#201AAEE8</color>
+
+    <!-- ══════════════════════════════════════════════════════════════════════
+         5. FONDO GENERAL
+    ══════════════════════════════════════════════════════════════════════ -->
+    <color name="surface_color">#000000</color>                 <!-- Azul muy oscuro, casi negro -->
+
+    <!-- 5.2 Barra de búsqueda -->
+    <color name="search_hint_text">#888888</color>
+    <color name="search_status_text">@color/red_logo</color>
+    <color name="search_box_stroke">@color/red_logo</color>
+    <color name="search_box_background">#152230</color>
+    <color name="search_icon_tint">@color/red_logo</color>
+    <color name="search_hint_floating">@color/red_logo</color>
+    <color name="search_cursor">@color/primary</color>
+    <color name="search_input_text">#E8F4FC</color>
+
+    <!-- 5.3 Chips -->
+    <color name="chip_text">@color/primary</color>
+    <color name="chip_stroke">@color/primary</color>
+    <color name="chip_background">#152230</color>
+    <color name="chip_background_selected">#152230</color>
+    <color name="chip_text_selected">#FF8888</color>
+    <color name="chip_check_icon">@color/chip_text_selected</color>
+
+    <!-- 5.4 Grupo header -->
+    <color name="grupo_nombre_text">@color/primary</color>
+    <color name="grupo_conteo_text">#888888</color>
+
+    <!-- 5.5 Card de video -->
+    <color name="video_thumbnail_background">#1A1AAEE8</color>
+    <color name="video_card_background">#152230</color>
+    <color name="video_card_stroke">#1A3A5A</color>
+    <color name="video_card_accent_bar">@color/red_logo</color>
+    <color name="video_titulo_text">#E8F4FC</color>
+    <color name="video_predicador_text">@color/primary</color>
+    <color name="video_fecha_text">#888888</color>
+    <color name="video_chip_libro_background">#2AE05555</color>
+    <color name="video_chip_libro_text">@color/red_logo</color>
+    <color name="video_play_icon_tint">@color/primary</color>
+
+    <!-- 5.6 Estado vacío -->
+    <color name="empty_state_title">@color/primary</color>
+    <color name="empty_state_subtitle">#888888</color>
+
+    <!-- ══════════════════════════════════════════════════════════════════════
+         5b. SELECTOR DE GRUPOS
+    ══════════════════════════════════════════════════════════════════════ -->
+    <color name="grupo_card_background">@color/primary</color>
+    <color name="grupo_card_texto">@color/white</color>
+    <color name="grupo_card_icono_circulo">#25FFFFFF</color>
+    <color name="grupo_card_flecha_circulo">#20FFFFFF</color>
+
+    <!-- ══════════════════════════════════════════════════════════════════════
+         6. REPRODUCTOR DE VIDEO
+    ══════════════════════════════════════════════════════════════════════ -->
+    <color name="player_background">#000000</color>
+    <color name="player_titulo_background">@color/primary</color>
+    <color name="player_titulo_text">@color/accent</color>
+
+    <color name="player_info_background">@color/surface_color</color>
+    <color name="player_info_label_color">@color/primary</color>
+    <color name="player_info_value_text">#BBCCDD</color>
+
+    <!-- ══════════════════════════════════════════════════════════════════════
+         7. JUEGO
+    ══════════════════════════════════════════════════════════════════════ -->
+    <color name="trivia_titulo_text">#FFFFFF</color>
+    <color name="juego_background">@color/surface_color</color>
+    <color name="juego_placeholder_icon">@color/primary</color>
+    <color name="juego_placeholder_text">@color/primary</color>
+
+    <!-- ══════════════════════════════════════════════════════════════════════
+          8. PANTALLA PETICIONES — ajustado para fondo azul oscuro pergaminoacerca
+     ══════════════════════════════════════════════════════════════════════ -->
+    <color name="peticion_fondo">@color/surface_color</color>
+    <color name="peticion_card_fondo">#0F2233</color>
+    <color name="peticion_titulo">#FFFFFF</color>               <!-- Blanco puro — máximo contraste -->
+    <color name="peticion_subtitulo">#FFFFFF</color>            <!-- Azul muy claro, suave -->
+    <color name="peticion_input_fondo">#1A2A3A</color>          <!-- Azul muy oscuro translúcido -->
+    <color name="peticion_input_stroke">#6ACDE8</color>         <!-- Cyan claro — visible sobre azul -->
+    <color name="peticion_input_texto">#FFFFFF</color>          <!-- Texto blanco -->
+    <color name="peticion_input_hint">#88BBDD</color>           <!-- Hint azul claro -->
+    <color name="peticion_btn_fondo">@color/ic_launcher_background</color>            <!-- Cyan — resalta sobre el fondo -->
+    <color name="peticion_btn_texto">#FFFFFF</color>
+    <color name="peticion_confirmacion_titulo">#FFFFFF</color>
+    <color name="peticion_confirmacion_texto">#CCE8FF</color>
+    <color name="peticion_nueva_btn_texto">#FFFFFF</color>
+    <color name="peticion_nueva_btn_stroke">#6ACDE8</color>
+    <!-- Borde cyan claro -->
+
+
+    <!-- ══════════════════════════════════════════════════════════════════════
+     devocional
+ ══════════════════════════════════════════════════════════════════════ -->
+
+    <color name="devocional_texto">#FFFFFF</color>
+
+
+    <!-- ══════════════════════════════════════════════════════════════════════
+Letras del miniranking
+══════════════════════════════════════════════════════════════════════ -->
+    <color name="ranking_dificultad_text">#FFFFFF</color>
+
+</resources>

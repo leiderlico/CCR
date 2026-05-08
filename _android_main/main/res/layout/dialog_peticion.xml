@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#99000000"
+    android:clipToPadding="false">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:minHeight="100dp"
+        android:paddingVertical="32dp"
+        android:paddingHorizontal="28dp">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="12dp"
+            app:cardBackgroundColor="@color/peticion_card_fondo">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <!-- Header cyan (mismo día y noche) — oculto en confirmación -->
+                <FrameLayout
+                    android:id="@+id/headerPeticion"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#1AAEE8"
+                    android:paddingTop="28dp"
+                    android:paddingBottom="22dp"
+                    android:paddingHorizontal="24dp">
+
+                    <!-- Ícono ver peticiones — arriba derecha, solo autorizados -->
+                    <ImageButton
+                        android:id="@+id/btnVerPeticiones"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_gravity="top|end"
+                        android:background="@drawable/bg_flecha_circle"
+                        android:src="@drawable/ic_verpeticion"
+                        android:tint="#CCFFFFFF"
+                        android:scaleType="center"
+                        android:padding="6dp"
+                        android:contentDescription="Ver peticiones" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:orientation="vertical"
+                        android:gravity="center">
+
+                        <FrameLayout
+                            android:layout_width="68dp"
+                            android:layout_height="68dp"
+                            android:layout_marginBottom="14dp"
+                            android:background="@drawable/bg_circle_primary_light"
+                            android:backgroundTint="#33FFFFFF">
+                            <ImageView
+                                android:layout_width="44dp"
+                                android:layout_height="44dp"
+                                android:layout_gravity="center"
+                                android:src="@drawable/emogipeticiones"
+                                android:scaleType="fitCenter"
+                                android:contentDescription="Peticiones" />
+                        </FrameLayout>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Peticiones"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            android:textColor="#FFFFFF"
+                            android:layout_marginBottom="6dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Cuéntanos lo que está en tu corazón.\nEstamos aquí para orar contigo."
+                            android:gravity="center"
+                            android:textSize="13sp"
+                            android:textColor="#DDFFFFFF"
+                            android:lineSpacingMultiplier="1.5" />
+
+                    </LinearLayout>
+                </FrameLayout>
+
+                <!-- ESTADO 1: FORMULARIO -->
+                <LinearLayout
+                    android:id="@+id/layoutFormulario"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="22dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="TU PETICIÓN"
+                        android:textSize="11sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/peticion_input_hint"
+                        android:letterSpacing="0.06"
+                        android:layout_marginBottom="8dp" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/tilPeticion"
+                        style="@style/PeticionTextInputStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Escribe aquí lo que quieres llevar en oración..."
+                        android:layout_marginBottom="18dp">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etPeticion"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:minLines="5"
+                            android:maxLines="8"
+                            android:gravity="top|start"
+                            android:inputType="textMultiLine|textCapSentences"
+                            android:textColor="@color/peticion_input_texto"
+                            android:textSize="15sp" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnEnviarPeticion"
+                        android:layout_width="match_parent"
+                        android:layout_height="52dp"
+                        android:text="Enviar petición"
+                        android:textColor="@color/peticion_btn_texto"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        app:backgroundTint="@color/primary"
+                        app:cornerRadius="10dp" />
+
+                </LinearLayout>
+
+                <!-- ESTADO 2: CONFIRMACIÓN -->
+                <LinearLayout
+                    android:id="@+id/layoutConfirmacion"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="28dp"
+                    android:gravity="center"
+                    android:visibility="gone">
+
+                    <FrameLayout
+                        android:layout_width="72dp"
+                        android:layout_height="72dp"
+                        android:layout_gravity="center"
+                        android:layout_marginBottom="20dp"
+                        android:background="@drawable/bg_circle_primary_light">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:text="✓"
+                            android:gravity="center"
+                            android:textSize="34sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/primary" />
+                    </FrameLayout>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="¡Petición enviada!"
+                        android:gravity="center"
+                        android:textSize="22sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/peticion_confirmacion_titulo"
+                        android:layout_marginBottom="10dp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Tu petición será tomada por quienes corresponda en el menor tiempo posible."
+                        android:gravity="center"
+                        android:textSize="14sp"
+                        android:textColor="@color/peticion_confirmacion_texto"
+                        android:lineSpacingMultiplier="1.5"
+                        android:layout_marginBottom="28dp" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnNuevaPeticion"
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:text="Agregar otra petición"
+                        android:textColor="@color/primary"
+                        android:textSize="14sp"
+                        android:layout_marginBottom="10dp"
+                        app:strokeColor="@color/primary"
+                        app:cornerRadius="10dp" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnSalirPeticion"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:text="Salir"
+                        android:textColor="#FFFFFF"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        app:backgroundTint="@color/primary"
+                        app:cornerRadius="10dp" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+    </LinearLayout>
+</ScrollView>

@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/surface_color">
+
+    <!-- Video 16:9 -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/player_background">
+        <WebView
+            android:id="@+id/webView"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintDimensionRatio="16:9" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:background="@color/primary" />
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- Info del video -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:paddingTop="11dp"
+                android:paddingBottom="11dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="10dp">
+                    <View
+                        android:layout_width="4dp"
+                        android:layout_height="match_parent"
+                        android:background="@color/primary"
+                        android:layout_marginEnd="12dp" />
+                    <TextView
+                        android:id="@+id/tvVideoPlayerTitulo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/player_info_label_color"
+                        android:lineSpacingMultiplier="1.35" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/divider_color"
+                    android:layout_marginBottom="7dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+
+                    <LinearLayout
+                        android:id="@+id/layoutCitaExpandir"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical">
+                        <TextView
+                            android:id="@+id/tvVideoPlayerCita"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="14sp"
+                            android:textColor="@color/red_logo"
+                            android:textStyle="bold" />
+                        <ImageView
+                            android:id="@+id/ivExpandirBiblia"
+                            android:layout_width="18dp"
+                            android:layout_height="18dp"
+                            android:layout_marginStart="4dp"
+                            android:src="@drawable/ic_expand_more"
+                            android:visibility="gone"
+                            app:tint="@color/red_logo" />
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="16dp"
+                        android:background="@color/divider_color"
+                        android:layout_marginStart="12dp"
+                        android:layout_marginEnd="12dp" />
+
+                    <TextView
+                        android:id="@+id/tvVideoPlayerPredicador"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textSize="14sp"
+                        android:textAlignment="textEnd" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- Panel bíblico -->
+            <LinearLayout
+                android:id="@+id/panelBiblia"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="3dp"
+                    android:background="@color/primary" />
+
+                <!-- Header navegación -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:paddingHorizontal="16dp"
+                    android:paddingVertical="10dp">
+
+                    <!-- Flecha atrás (visible en capítulos y versículos) -->
+                    <ImageView
+                        android:id="@+id/ivBibliaBack"
+                        android:layout_width="28dp"
+                        android:layout_height="28dp"
+                        android:layout_marginEnd="8dp"
+                        android:src="@drawable/ic_expand_more"
+                        android:rotation="90"
+                        android:visibility="gone"
+                        app:tint="@color/primary" />
+
+                    <!-- Título clickeable (en capítulos lleva a libros) -->
+                    <TextView
+                        android:id="@+id/tvBibliaHeader"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/player_info_label_color" />
+
+                    <!-- Spinner versión (visible solo en versículos) -->
+                    <Spinner
+                        android:id="@+id/spinnerVersion"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:minWidth="80dp"
+                        android:visibility="gone" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/divider_color" />
+
+                <!-- ── LIBROS: dos columnas Antiguo / Nuevo ── -->
+                <LinearLayout
+                    android:id="@+id/panelLibros"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
+
+                    <!-- Antiguo Testamento -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Antiguo Testamento"
+                            android:textSize="13sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/testamento_header_text"
+                            android:background="@color/testamento_header_background"
+                            android:gravity="center"
+                            android:paddingVertical="6dp" />
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rvLibrosAntiguo"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:nestedScrollingEnabled="false"
+                            android:paddingBottom="8dp" />
+                    </LinearLayout>
+
+                    <!-- Divisor: empieza debajo del header (~38dp) igual que LibrosFragment -->
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:background="@color/divider_color"
+                        android:layout_marginTop="38dp" />
+
+                    <!-- Nuevo Testamento -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Nuevo Testamento"
+                            android:textSize="13sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/testamento_header_text"
+                            android:background="@color/testamento_header_background"
+                            android:gravity="center"
+                            android:paddingVertical="6dp" />
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rvLibrosNuevo"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:nestedScrollingEnabled="false"
+                            android:paddingBottom="8dp" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <!-- ── CAPÍTULOS: grid ── -->
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvCapitulos"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:nestedScrollingEnabled="false"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="16dp"
+                    android:visibility="gone" />
+
+                <!-- ── VERSÍCULOS ── -->
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvVersiculos"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:nestedScrollingEnabled="false"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="24dp"
+                    android:visibility="gone" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</LinearLayout>
