@@ -170,13 +170,96 @@ body:not(.root-screen) #toolbarLogo { display: none; }
 /* ══════════════════════════════════════════════════════
    BIBLIA
 ══════════════════════════════════════════════════════ */
+.bible-search-wrap {
+  position: sticky;
+  top: 0;
+  z-index: 7;
+  padding: 8px 8px 4px;
+  background: var(--bg);
+}
+.bible-search-box {
+  height: 46px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 10px;
+  border-radius: 8px;
+  border: 1px solid rgba(26,174,232,.26);
+  background: var(--surface2);
+}
+.bible-search-box span { color: var(--primary); font-size: 23px; line-height: 1; }
+.bible-search-box input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--text);
+  font: 700 14px 'Lora', Georgia, serif;
+}
+.bible-search-box button {
+  width: 28px;
+  height: 28px;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--text2);
+  font-size: 22px;
+}
+.suggestion-panel {
+  margin-top: 8px;
+  border-radius: 8px;
+  border: 1px solid rgba(26,174,232,.22);
+  background: var(--surface);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+.suggestion-head {
+  min-height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 12px;
+  color: var(--primary);
+  font-size: 13px;
+  border-bottom: 1px solid var(--border);
+}
+.suggestion-head button {
+  border: 0;
+  background: transparent;
+  color: var(--text2);
+  font: 700 12px 'Lora', Georgia, serif;
+}
+.suggestions-container { display: flex; flex-direction: column; }
+.suggestion-card {
+  width: 100%;
+  border: 0;
+  border-bottom: 1px solid var(--border);
+  background: transparent;
+  padding: 10px 12px;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.suggestion-card:active { background: var(--surface2); }
+.suggestion-ref { color: var(--primary-light); font-weight: 800; font-size: 13px; }
+.suggestion-text {
+  color: var(--text);
+  font-size: 13px;
+  line-height: 1.35;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
 .tabs-biblia {
   display: flex;
   gap: 12px;
   background: var(--bg);
   border-bottom: none;
   position: sticky;
-  top: 0;
+  top: 58px;
   z-index: 5;
   padding: 8px 6px 4px;
 }
@@ -251,12 +334,18 @@ body.light .libro-item:active { background: #d7f1fb; }
   top: 0;
   z-index: 6;
   display: flex;
+  flex-direction: column;
   gap: 8px;
   padding: 8px 12px;
   background: var(--bg);
   border-bottom: 1px solid var(--border);
 }
-.verse-selection-bar button {
+.verse-actions-row {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 7px;
+}
+.verse-actions-row button {
   flex: 1;
   min-height: 38px;
   border: 1px solid var(--primary);
@@ -266,16 +355,33 @@ body.light .libro-item:active { background: #d7f1fb; }
   font: 800 12px 'Lora', Georgia, serif;
   cursor: pointer;
 }
-.verse-selection-bar button:last-child {
+.verse-actions-row button:last-child {
   background: transparent;
   color: var(--primary);
+}
+.verse-colors-row {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 7px;
+}
+.verse-color-chip {
+  min-height: 30px;
+  border: 1px solid rgba(255,255,255,.26);
+  border-radius: 999px;
+  background: var(--chip);
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,.12);
 }
 .versiculo-item { padding: 10px 20px; border-bottom: 1px solid var(--border); display: flex; gap: 10px; cursor: pointer; transition: background .15s; }
 .versiculo-item:active { background: var(--surface2); }
 .ver-num { color: var(--primary-light); font-weight: 700; font-size: 13px; min-width: 24px; margin-top: 2px; }
 .ver-texto { color: var(--text); font-size: 16px; line-height: 1.6; }
-.versiculo-item.highlighted, .versiculo-item.selected { background: rgba(26,174,232,0.16); }
+.versiculo-item.highlighted { background: var(--highlight-color, rgba(26,174,232,0.16)); }
+.versiculo-item.selected { background: rgba(26,174,232,0.22); }
 .versiculo-item.selected .ver-texto { color: var(--primary-light); }
+.versiculo-item.search-highlight {
+  outline: 2px solid var(--primary);
+  background: rgba(26,174,232,.24);
+}
 .chapter-video-fab {
   position: fixed;
   right: 16px;
@@ -542,6 +648,35 @@ body.dark .ranking-full-row { color: var(--text); }
 .pet-ok-icon { font-size: 60px; margin-bottom: 16px; }
 .pet-confirmacion h3 { font-family: 'Cinzel', serif; font-size: 22px; color: var(--text); margin-bottom: 8px; }
 .pet-confirmacion p { font-size: 14px; color: var(--text2); margin-bottom: 16px; }
+.peticiones-list {
+  min-height: 100%;
+  padding: 18px 14px 92px;
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.pet-bubble {
+  width: min(92%, 520px);
+  align-self: flex-start;
+  padding: 13px 15px;
+  border-radius: 16px 16px 16px 4px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+}
+.pet-bubble:nth-child(even) { align-self: flex-end; border-radius: 16px 16px 4px 16px; }
+.pet-bubble p { color: var(--text); font-size: 15px; line-height: 1.5; margin-bottom: 8px; }
+.pet-bubble span { display: block; color: var(--primary-light); font-size: 11px; font-weight: 800; text-align: right; }
+.pet-empty {
+  margin: 26px 16px;
+  padding: 22px;
+  border-radius: 8px;
+  color: var(--text2);
+  text-align: center;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+}
 
 /* Acerca */
 .acerca-wrap { position: relative; min-height: 100%; overflow: hidden; }
