@@ -168,20 +168,11 @@ function actualizarTimer(t) {
 function responder(btn, respuesta, correcta) {
   if (juegoState.respondida) return;
   juegoState.respondida = true;
-  clearInterval(juegoState.timer);
 
   const esCorrecta = respuesta === correcta;
   if (esCorrecta) juegoState.correctas++;
   juegoState.preguntasRespondidas++;
-
-  // Highlight all buttons
-  document.querySelectorAll('.opcion-btn').forEach(b => {
-    b.disabled = true;
-    if (b.textContent === correcta) b.classList.add('correcta');
-    else if (b === btn && !esCorrecta) b.classList.add('incorrecta');
-  });
-
-  setTimeout(avanzarPregunta, 1200);
+  avanzarPregunta();
 }
 
 function avanzarPregunta() {

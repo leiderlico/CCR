@@ -181,9 +181,9 @@ function goBackInternal() {
       document.getElementById('toolbarTitle').textContent = window.currentGrupoNombre || '';
       document.getElementById('bottomNav').style.display = 'flex';
     } else if (prevId === 'screenVersiculos') {
-      document.getElementById('toolbarTitle').textContent = window.currentLibroNombre && window.currentCapitulo
-        ? `${window.currentLibroNombre} ${window.currentCapitulo}`
-        : (window.currentLibroNombre || '');
+      document.getElementById('toolbarTitle').textContent = window.currentLibroAbbrev && window.currentCapitulo
+        ? `${window.currentLibroAbbrev} ${window.currentCapitulo}`
+        : (window.currentLibroAbbrev || window.currentLibroNombre || '');
       document.getElementById('btnVersion').classList.remove('hidden');
       document.getElementById('bottomNav').style.display = 'none';
     }

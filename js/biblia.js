@@ -3,7 +3,9 @@ let bibleData = null;
 let currentVersion = 'RVA1960';
 let currentLibro = null;
 let currentCapitulo = null;
+let selectedVerses = new Set();
 window.currentLibroNombre = '';
+window.currentLibroAbbrev = '';
 window.currentCapitulo = null;
 window.bibleData = null;
 
@@ -124,6 +126,7 @@ function renderLibros() {
 function seleccionarLibro(libro) {
   currentLibro = libro;
   window.currentLibroNombre = libro.nombre;
+  window.currentLibroAbbrev = libro.abreviacion || libro.nombre;
   const grid = document.getElementById('listaCapitulos');
   grid.innerHTML = '';
 
@@ -142,7 +145,7 @@ function seleccionarCapitulo(num) {
   currentCapitulo = num;
   window.currentCapitulo = num;
   renderVersiculos(num);
-  pushScreen('screenVersiculos', currentLibro.nombre + ' ' + num, true);
+  pushScreen('screenVersiculos', getLibroAbreviado(currentLibro) + ' ' + num, true);
   document.getElementById('btnVersion').classList.remove('hidden');
   document.getElementById('btnVersion').textContent = currentVersion;
 }
@@ -154,6 +157,24 @@ function renderVersiculos(num) {
 
   const lista = document.getElementById('listaVersiculos');
   lista.innerHTML = '';
+  selectedVerses.clear();
+  updateVerseSelectionBar();
+
+  const chapterTitle = document.createElement('div');
+  chapterTitle.className = 'versiculo-chapter-title';
+  chapterTitle.textContent = `${currentLibro.nombre} ${num}`;
+  lista.appendChild(chapterTitle);
+
+  const tools = document.createElement('div');
+  tools.id = 'verseSelectionBar';
+  tools.className = 'verse-selection-bar hidden';
+  tools.innerHTML = `
+    <button onclick="listenSelectedVerses()">Escuchar</button>
+    <button onclick="shareSelectedVerses()">Compartir</button>
+    <button onclick="clearVerseSelection()">Cancelar</button>
+  `;
+  lista.appendChild(tools);
+
   const videosSlot = document.createElement('div');
   videosSlot.id = 'chapterVideosSlot';
   lista.appendChild(videosSlot);
@@ -161,11 +182,104 @@ function renderVersiculos(num) {
   versiculos.forEach(v => {
     const el = document.createElement('div');
     el.className = 'versiculo-item';
+    el.dataset.verse = v.versiculo;
     el.innerHTML = `<span class="ver-num">${v.versiculo}</span><span class="ver-texto">${escapeHtml(v.texto)}</span>`;
+    bindVerseSelection(el, v.versiculo);
     lista.appendChild(el);
   });
 
   renderChapterVideosHint(videosSlot, currentLibro.id, num, currentLibro.nombre);
+}
+
+function getLibroAbreviado(libro) {
+  return libro?.abreviacion || libro?.nombre || '';
+}
+
+function bindVerseSelection(el, verseNumber) {
+  let pressTimer = null;
+  let longPressed = false;
+  const start = () => {
+    longPressed = false;
+    pressTimer = setTimeout(() => {
+      longPressed = true;
+      toggleVerseSelection(verseNumber, el);
+    }, 420);
+  };
+  const clear = () => {
+    if (pressTimer) clearTimeout(pressTimer);
+    pressTimer = null;
+  };
+  el.addEventListener('touchstart', start, { passive: true });
+  el.addEventListener('mousedown', start);
+  el.addEventListener('touchend', clear);
+  el.addEventListener('mouseup', clear);
+  el.addEventListener('mouseleave', clear);
+  el.addEventListener('click', event => {
+    if (longPressed) {
+      event.preventDefault();
+      return;
+    }
+    if (selectedVerses.size > 0) toggleVerseSelection(verseNumber, el);
+  });
+}
+
+function toggleVerseSelection(verseNumber, el) {
+  const key = Number(verseNumber);
+  if (selectedVerses.has(key)) {
+    selectedVerses.delete(key);
+    el.classList.remove('selected');
+  } else {
+    selectedVerses.add(key);
+    el.classList.add('selected');
+  }
+  updateVerseSelectionBar();
+}
+
+function updateVerseSelectionBar() {
+  const bar = document.getElementById('verseSelectionBar');
+  if (!bar) return;
+  bar.classList.toggle('hidden', selectedVerses.size === 0);
+}
+
+function getSelectedVerseText() {
+  const selected = [...selectedVerses].sort((a, b) => a - b);
+  if (!selected.length) return '';
+  const verses = (bibleData.versiculos || [])
+    .filter(v =>
+      Number(v.libro_id) === Number(currentLibro.id) &&
+      Number(v.capitulo) === Number(currentCapitulo) &&
+      selected.includes(Number(v.versiculo))
+    )
+    .sort((a, b) => Number(a.versiculo) - Number(b.versiculo));
+  const range = selected.length === 1 ? selected[0] : `${selected[0]}-${selected[selected.length - 1]}`;
+  return `${currentLibro.nombre} ${currentCapitulo}:${range}\n\n${verses.map(v => `${v.versiculo}. ${v.texto}`).join('\n')}`;
+}
+
+async function shareSelectedVerses() {
+  const text = getSelectedVerseText();
+  if (!text) return;
+  try {
+    if (navigator.share) await navigator.share({ title: `${currentLibro.nombre} ${currentCapitulo}`, text });
+    else if (navigator.clipboard) {
+      await navigator.clipboard.writeText(text);
+      alert('Versiculo copiado');
+    }
+  } catch(e) {}
+}
+
+function listenSelectedVerses() {
+  const text = getSelectedVerseText();
+  if (!text || !window.speechSynthesis) return;
+  window.speechSynthesis.cancel();
+  const utterance = new SpeechSynthesisUtterance(text.replace(/\n+/g, '. '));
+  utterance.lang = 'es-ES';
+  window.speechSynthesis.speak(utterance);
+}
+
+function clearVerseSelection() {
+  selectedVerses.clear();
+  document.querySelectorAll('.versiculo-item.selected').forEach(el => el.classList.remove('selected'));
+  updateVerseSelectionBar();
 }
 
 async function renderChapterVideosHint(slot, libroId, capitulo, libroNombre) {

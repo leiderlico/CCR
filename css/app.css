@@ -239,11 +239,43 @@ body.light .libro-item:active { background: #d7f1fb; }
 .cap-item:active { background: var(--primary); color: #fff; transform: scale(0.95); }
 
 .versiculos-list { padding: 8px 0 80px; }
+.versiculo-chapter-title {
+  padding: 14px 20px 10px;
+  color: var(--primary);
+  font-size: 18px;
+  font-weight: 800;
+  text-align: center;
+}
+.verse-selection-bar {
+  position: sticky;
+  top: 0;
+  z-index: 6;
+  display: flex;
+  gap: 8px;
+  padding: 8px 12px;
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+}
+.verse-selection-bar button {
+  flex: 1;
+  min-height: 38px;
+  border: 1px solid var(--primary);
+  border-radius: 8px;
+  background: var(--primary);
+  color: #fff;
+  font: 800 12px 'Lora', Georgia, serif;
+  cursor: pointer;
+}
+.verse-selection-bar button:last-child {
+  background: transparent;
+  color: var(--primary);
+}
 .versiculo-item { padding: 10px 20px; border-bottom: 1px solid var(--border); display: flex; gap: 10px; cursor: pointer; transition: background .15s; }
 .versiculo-item:active { background: var(--surface2); }
 .ver-num { color: var(--primary-light); font-weight: 700; font-size: 13px; min-width: 24px; margin-top: 2px; }
 .ver-texto { color: var(--text); font-size: 16px; line-height: 1.6; }
-.versiculo-item.highlighted { background: rgba(123,94,167,0.15); }
+.versiculo-item.highlighted, .versiculo-item.selected { background: rgba(26,174,232,0.16); }
+.versiculo-item.selected .ver-texto { color: var(--primary-light); }
 .chapter-video-fab {
   position: fixed;
   right: 16px;
