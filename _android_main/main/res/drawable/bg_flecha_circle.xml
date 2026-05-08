@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<shape xmlns:android="http://schemas.android.com/apk/res/android"
-    android:shape="oval">
-    <!-- Blanco al 12% — ver grupo_card_flecha_circulo en colors.xml -->
-    <solid android:color="@color/grupo_card_flecha_circulo" />
-</shape>

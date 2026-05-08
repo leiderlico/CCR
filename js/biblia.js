@@ -527,7 +527,7 @@ function normalizeBibleText(text) {
   return String(text || '')
     .normalize('NFD')
     .replace(/[\u0300-\u036f]/g, '')
-    .replace(/[^\p{L}\p{N}\s]/gu, ' ')
+    .replace(/[^a-z0-9\s]/gi, ' ')
     .replace(/\s+/g, ' ')
     .toLowerCase()
     .trim();
